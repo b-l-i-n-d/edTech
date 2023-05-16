@@ -1,0 +1,39 @@
+{
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/recommended",
+    "plugin:security/recommended",
+    "plugin:prettier/recommended",
+    "plugin:node/recommended"
+  ],
+  "plugins": ["jest", "security", "prettier"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "ecmaVersion": 2018,
+    "babelOptions": {
+      "parserOpts": {
+        "plugins": ["importAssertions"]
+      }
+    }
+  },
+  "rules": {
+    "no-console": "error",
+    "func-names": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off",
+    "jest/expect-expect": "off",
+    "security/detect-object-injection": "off",
+    "import/extensions": [
+      "error",
+      {
+        "js": "ignorePackages",
+        "json": "always"
+      }
+    ]
+  }
+}
