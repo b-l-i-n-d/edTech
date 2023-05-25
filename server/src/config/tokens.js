@@ -5,5 +5,4 @@ const tokenTypes = {
 	VERIFY_EMAIL: 'verifyEmail',
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { tokenTypes };
+export default { tokenTypes };

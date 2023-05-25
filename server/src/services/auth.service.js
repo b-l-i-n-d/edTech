@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
-import { tokenTypes } from '../config/tokens.js';
+import token from '../config/tokens.js';
 import Token from '../models/token.model.js';
 import ApiError from '../utils/ApiError.js';
-import { generateAuthTokens, verifyToken } from './token.service.js';
-import { getUserByEmail, getUserById, updateUserById } from './user.service.js';
+import tokenServices from './token.service.js';
+import userServices from './user.service.js';
 
 /**
  * Login with username and password
@@ -12,7 +12,7 @@ import { getUserByEmail, getUserById, updateUserById } from './user.service.js';
  * @returns {Promise<User>}
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
-	const user = await getUserByEmail(email);
+	const user = await userServices.getUserByEmail(email);
 	if (!user || !(await user.isPasswordMatch(password))) {
 		throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
 	}
@@ -25,7 +25,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  * @returns {Promise}
  */
 const logout = async (refreshToken) => {
-	const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
+	const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: token.tokenTypes.REFRESH, blacklisted: false });
 	if (!refreshTokenDoc) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
 	}
@@ -39,13 +39,13 @@ const logout = async (refreshToken) => {
  */
 const refreshAuth = async (refreshToken) => {
 	try {
-		const refreshTokenDoc = await verifyToken(refreshToken, tokenTypes.REFRESH);
-		const user = await getUserById(refreshTokenDoc.user);
+		const refreshTokenDoc = await tokenServices.verifyToken(refreshToken, token.tokenTypes.REFRESH);
+		const user = await userServices.getUserById(refreshTokenDoc.user);
 		if (!user) {
 			throw new Error();
 		}
 		await refreshTokenDoc.remove();
-		return generateAuthTokens(user);
+		return tokenServices.generateAuthTokens(user);
 	} catch (error) {
 		throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
 	}
@@ -59,13 +59,13 @@ const refreshAuth = async (refreshToken) => {
  */
 const resetPassword = async (resetPasswordToken, newPassword) => {
 	try {
-		const resetPasswordTokenDoc = await verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-		const user = await getUserById(resetPasswordTokenDoc.user);
+		const resetPasswordTokenDoc = await tokenServices.verifyToken(resetPasswordToken, token.tokenTypes.RESET_PASSWORD);
+		const user = await userServices.getUserById(resetPasswordTokenDoc.user);
 		if (!user) {
 			throw new Error();
 		}
-		await updateUserById(user.id, { password: newPassword });
-		await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
+		await userServices.updateUserById(user.id, { password: newPassword });
+		await Token.deleteMany({ user: user.id, type: token.tokenTypes.RESET_PASSWORD });
 	} catch (error) {
 		throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
 	}
@@ -78,13 +78,13 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
  */
 const verifyEmail = async (verifyEmailToken) => {
 	try {
-		const verifyEmailTokenDoc = await verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-		const user = await getUserById(verifyEmailTokenDoc.user);
+		const verifyEmailTokenDoc = await tokenServices.verifyToken(verifyEmailToken, token.tokenTypes.VERIFY_EMAIL);
+		const user = await userServices.getUserById(verifyEmailTokenDoc.user);
 		if (!user) {
 			throw new Error();
 		}
-		await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
-		await updateUserById(user.id, { isEmailVerified: true });
+		await Token.deleteMany({ user: user.id, type: token.tokenTypes.VERIFY_EMAIL });
+		await userServices.updateUserById(user.id, { isEmailVerified: true });
 	} catch (error) {
 		throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
 	}

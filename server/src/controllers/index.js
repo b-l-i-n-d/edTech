@@ -1,4 +1,5 @@
-import authController from './auth.controller';
-import userController from './user.controller';
+import authController from './auth.controller.js';
+import userController from './user.controller.js';
+import videoController from './video.controller.js';
 
-export { authController, userController };
+export { authController, userController, videoController };

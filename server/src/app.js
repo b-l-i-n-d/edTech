@@ -9,8 +9,8 @@ import xss from 'xss-clean';
 import config from './config/config.js';
 import morgan from './config/morgan.js';
 import { jwtStrategy } from './config/passport.js';
-import { errorConverter, errorHandler } from './middlewares/error.js';
-import { authLimiter } from './middlewares/rateLimiter.js';
+import error from './middlewares/error.js';
+import authLimiter from './middlewares/rateLimiter.js';
 import routes from './routes/v1/index.js';
 import ApiError from './utils/ApiError.js';
 
@@ -59,9 +59,9 @@ app.use((req, res, next) => {
 });
 
 // convert error to ApiError, if needed
-app.use(errorConverter);
+app.use(error.errorConverter);
 
 // handle error
-app.use(errorHandler);
+app.use(error.errorHandler);
 
 export default app;
