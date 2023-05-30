@@ -1,3 +1,4 @@
 import isFetchBaseQueryError from "./isFetchBaseQueryError";
+import generateQueryUrl from "./generateQueryUrl";
 
-export { isFetchBaseQueryError };
+export { isFetchBaseQueryError, generateQueryUrl };

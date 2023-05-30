@@ -12,7 +12,12 @@ const LoginGuard: React.FC<Props> = ({ children }) => {
     const user = useAppSelector((state) => state.auth.user);
 
     if (user) {
-        router.replace("/");
+        if (user.role === "admin") {
+            router.replace("/admin");
+        }
+        if (user.role === "user") {
+            router.replace("/");
+        }
         return <Common.Loader />;
     }
 

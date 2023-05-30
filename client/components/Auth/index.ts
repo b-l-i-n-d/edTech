@@ -1,6 +1,7 @@
-import AuthRequired from "./AuthRequired";
+import AdminOnly from "./AdminOnly";
 import LoginGuard from "./LoginGuard";
+import UserOnly from "./UserOnly";
 
-const Auth = { AuthRequired, LoginGuard };
+const Auth = { AdminOnly, LoginGuard, UserOnly };
 
 export default Auth;

@@ -20,10 +20,11 @@ import { isFetchBaseQueryError } from "../../helpers";
 import Logo from "../../public/assets/logos/logo_transparent.png";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { useAppSelector } from "../../redux/hooks";
+import { selectUser } from "../../redux/features/auth/authSelector";
 
 const Login: NextPage = () => {
     const router = useRouter();
-    const user = useAppSelector((state) => state.auth.user);
+    const user = useAppSelector(selectUser);
 
     const [
         login,

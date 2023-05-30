@@ -2,20 +2,29 @@ import { Button, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { logout } from "../../redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useLogoutMutation } from "../../redux/features/auth/authApi";
+import {
+    selectRefreshToken,
+    selectUser,
+} from "../../redux/features/auth/authSelector";
+import { useAppSelector } from "../../redux/hooks";
 
 const AdminMenu: React.FC = () => {
     const router = useRouter();
     const pathname = router.pathname;
-    const user = useAppSelector((state) => state.auth.user);
-    const dispatch = useAppDispatch();
+    const user = useAppSelector(selectUser);
+    const refreshToken = useAppSelector(selectRefreshToken);
+    const [logout, { isLoading: isLogoutLoading }] = useLogoutMutation();
+
+    const handleLogout = () => {
+        logout(refreshToken);
+    };
 
     const items = [
         {
-            key: "/",
+            key: "/admin",
             label: (
-                <Link href="/">
+                <Link href="/admin">
                     <Button type="text">
                         <Typography.Text strong>Dashboard</Typography.Text>
                     </Button>
@@ -23,11 +32,13 @@ const AdminMenu: React.FC = () => {
             ),
         },
         {
-            key: "/videos",
+            key: "/admin/videos",
             label: (
-                <Button type="text">
-                    <Typography.Text strong>Videos</Typography.Text>
-                </Button>
+                <Link href="/admin/videos">
+                    <Button type="text">
+                        <Typography.Text strong>Videos</Typography.Text>
+                    </Button>
+                </Link>
             ),
         },
         {
@@ -61,9 +72,7 @@ const AdminMenu: React.FC = () => {
                 {
                     key: "logout",
                     label: "Logout",
-                    onClick: () => {
-                        dispatch(logout());
-                    },
+                    onClick: handleLogout,
                 },
             ],
         },

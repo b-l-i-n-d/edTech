@@ -32,10 +32,12 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         userLoggedIn: (state, action) => {
-            state.tokens = action.payload.tokens;
-            state.user = action.payload.user;
+            state.tokens = action.payload.tokens
+                ? action.payload.tokens
+                : state.tokens;
+            state.user = action.payload.user ? action.payload.user : state.user;
         },
-        logout: (state) => {
+        userLoggOut: (state) => {
             storage.removeItem("persist:nextjs");
             return initialState;
         },
@@ -50,6 +52,6 @@ const authSlice = createSlice({
         }),
 });
 
-export const { userLoggedIn, logout } = authSlice.actions;
+export const { userLoggedIn, userLoggOut } = authSlice.actions;
 
 export default authSlice.reducer;

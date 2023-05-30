@@ -1,5 +1,5 @@
 import { apiSlice } from "../../api/apiSlice";
-import { userLoggedIn } from "./authSlice";
+import { userLoggOut, userLoggedIn } from "./authSlice";
 
 interface LoginParams {
     email: string;
@@ -43,13 +43,51 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
         logout: builder.mutation({
-            query: () => ({
+            query: (refreshToken: string) => ({
                 url: "auth/logout",
                 method: "POST",
+                body: { refreshToken },
             }),
+
+            async onQueryStarted(
+                refreshToken: string,
+                { dispatch, queryFulfilled }
+            ) {
+                try {
+                    await queryFulfilled;
+                    await dispatch(userLoggOut());
+                } catch (err) {
+                    // Handle error
+                }
+            },
+        }),
+        refreshTokens: builder.mutation({
+            query: (refreshToken) => ({
+                url: "auth/refresh-tokens",
+                method: "POST",
+                body: { refreshToken },
+            }),
+
+            async onQueryStarted(
+                refreshToken: string,
+                { dispatch, queryFulfilled }
+            ) {
+                try {
+                    const { data } = await queryFulfilled;
+                    if (data) {
+                        await dispatch(userLoggedIn({ tokens: data }));
+                    }
+                } catch (err) {
+                    // Handle error
+                }
+            },
         }),
     }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
-    authApi;
+export const {
+    useLoginMutation,
+    useRegisterMutation,
+    useLogoutMutation,
+    useRefreshTokensMutation,
+} = authApi;

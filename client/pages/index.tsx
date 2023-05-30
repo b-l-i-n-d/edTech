@@ -20,7 +20,7 @@ const { Title } = Typography;
 
 export default function Landing() {
     return (
-        <Auth.AuthRequired>
+        <Auth.UserOnly>
             <Head>
                 <title>Ant Design</title>
             </Head>
@@ -80,6 +80,6 @@ export default function Landing() {
                     </Space>
                 </Form.Item>
             </Form>
-        </Auth.AuthRequired>
+        </Auth.UserOnly>
     );
 }

@@ -60,7 +60,7 @@ const deleteVideoById = async (videoId) => {
 	if (!video) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
 	}
-	await video.remove();
+	await video.deleteOne();
 	return video;
 };
 

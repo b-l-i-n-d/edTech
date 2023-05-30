@@ -1,8 +1,13 @@
 import { Divider, Layout, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../public/assets/logos/logo_transparent.png";
+import { useRefreshTokensMutation } from "../redux/features/auth/authApi";
+import {
+    selectRefreshToken,
+    selectUser,
+} from "../redux/features/auth/authSelector";
 import { useAppSelector } from "../redux/hooks";
 import Menus from "./Menus";
 
@@ -17,7 +22,12 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const user = useAppSelector((state) => state.auth.user);
+    const user = useAppSelector(selectUser);
+    const refreshToken = useAppSelector(selectRefreshToken);
+
+    const [refreshAuthToekn, { data, isLoading, error }] =
+        useRefreshTokensMutation();
+
     const menu = !user ? (
         <Menus.NoAuthMenu />
     ) : user?.role === "admin" ? (
@@ -25,6 +35,13 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     ) : (
         <Menus.UserMenu />
     );
+
+    useEffect(() => {
+        if (refreshToken) {
+            refreshAuthToekn(refreshToken);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Layout
