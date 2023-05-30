@@ -25,10 +25,10 @@ import { Auth } from "../../../components";
 import { apiConfig } from "../../../configs";
 import { Video } from "../../../interfaces";
 import {
-    useCreateVideoMutation,
+    useAddVideoMutation,
     useDeleteVideoMutation,
     useGetVideosQuery,
-    useUpdateVideoMutation,
+    useEditVideoMutation,
 } from "../../../redux/features/videos/videosApi";
 
 const Videos: NextPage = () => {
@@ -42,22 +42,23 @@ const Videos: NextPage = () => {
         page: currentPage,
         limit: apiConfig.PAGE_SIZE,
     });
+
     const [
-        createVideo,
+        addVideo,
         {
-            data: createdVideo,
-            isLoading: isCreateVideoLoading,
-            error: createVideoError,
+            data: addedVideo,
+            isLoading: isAddedVideoLoading,
+            error: addVideoError,
         },
-    ] = useCreateVideoMutation();
+    ] = useAddVideoMutation();
     const [
-        updateVideo,
+        editVideo,
         {
-            data: updatedVideo,
-            isLoading: isUpdateVideoLoading,
-            error: updateVideoError,
+            data: editedVideo,
+            isLoading: isEditVideoLoading,
+            error: editVideoError,
         },
-    ] = useUpdateVideoMutation();
+    ] = useEditVideoMutation();
     const [
         deleteVideo,
         {
@@ -91,9 +92,9 @@ const Videos: NextPage = () => {
 
     const handleSubmit = (values: Video) => {
         if (modalType === "add") {
-            createVideo(values);
+            addVideo(values);
         } else if (modalType === "edit") {
-            updateVideo({
+            editVideo({
                 ...values,
                 id: form.getFieldValue("id"),
             });
@@ -182,21 +183,21 @@ const Videos: NextPage = () => {
     ];
 
     useEffect(() => {
-        if (createdVideo || updatedVideo || deletedVideo) {
+        if (addedVideo || editedVideo || deletedVideo) {
             setIsModalOpen(false);
             form.resetFields();
         }
-    }, [createdVideo, updatedVideo, deletedVideo, form]);
+    }, [addedVideo, editedVideo, deletedVideo, form]);
 
     useEffect(() => {
-        if (createVideoError || updateVideoError || deleteVideoError) {
+        if (addVideoError || editVideoError || deleteVideoError) {
             setIsModalOpen(false);
             form.resetFields();
         }
-    }, [createVideoError, updateVideoError, deleteVideoError, form]);
+    }, [addVideoError, editVideoError, deleteVideoError, form]);
 
     useEffect(() => {
-        if (isCreateVideoLoading) {
+        if (isAddedVideoLoading) {
             notification.info({
                 key: "createVideo",
                 message: "Creating Video",
@@ -205,24 +206,24 @@ const Videos: NextPage = () => {
                 duration: 0,
             });
         }
-        if (!isCreateVideoLoading && !createVideoError && createdVideo) {
+        if (!isAddedVideoLoading && !addVideoError && addedVideo) {
             notification.success({
                 key: "createVideo",
                 message: "Video added successfully",
                 description: "Oh, that was fast. 🚀",
             });
         }
-        if (!isCreateVideoLoading && createVideoError) {
+        if (!isAddedVideoLoading && addVideoError) {
             notification.error({
                 key: "createVideo",
                 message: "Failed to create video",
                 description: "Please try again! 🥺",
             });
         }
-    }, [isCreateVideoLoading, createVideoError, createdVideo]);
+    }, [isAddedVideoLoading, addVideoError, addedVideo]);
 
     useEffect(() => {
-        if (isUpdateVideoLoading) {
+        if (isEditVideoLoading) {
             notification.info({
                 key: "updateVideo",
                 message: "Updating Video",
@@ -231,21 +232,21 @@ const Videos: NextPage = () => {
                 duration: 0,
             });
         }
-        if (!isUpdateVideoLoading && !updateVideoError && updatedVideo) {
+        if (!isEditVideoLoading && !editVideoError && editedVideo) {
             notification.success({
                 key: "updateVideo",
                 message: "Video updated successfully",
                 description: "Oh, that was fast. 🚀",
             });
         }
-        if (!isUpdateVideoLoading && updateVideoError) {
+        if (!isEditVideoLoading && editVideoError) {
             notification.error({
                 key: "updateVideo",
                 message: "Failed to update video",
                 description: "Please try again! 🥺",
             });
         }
-    }, [isUpdateVideoLoading, updateVideoError, updatedVideo]);
+    }, [isEditVideoLoading, editVideoError, editedVideo]);
 
     useEffect(() => {
         if (isDeleteVideoLoading) {
@@ -257,7 +258,7 @@ const Videos: NextPage = () => {
                 duration: 0,
             });
         }
-        if (!isDeleteVideoLoading && !deleteVideoError && deletedVideo) {
+        if (!isDeleteVideoLoading && !deleteVideoError) {
             notification.success({
                 key: "deleteVideo",
                 message: "Video deleted successfully",
@@ -289,7 +290,7 @@ const Videos: NextPage = () => {
                     onClick={handleAddModal}
                     icon={<PlusCircleOutlined />}
                 >
-                    Add Videos
+                    Add Video
                 </Button>
             </Space>
             <Table
@@ -320,9 +321,9 @@ const Videos: NextPage = () => {
                 }
                 confirmLoading={
                     modalType === "add"
-                        ? isCreateVideoLoading
+                        ? isAddedVideoLoading
                         : modalType === "edit"
-                        ? isUpdateVideoLoading
+                        ? isEditVideoLoading
                         : false
                 }
             >
