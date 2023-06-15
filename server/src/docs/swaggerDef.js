@@ -4,7 +4,7 @@ import config from '../config/config.js';
 const swaggerDef = {
 	openapi: '3.0.0',
 	info: {
-		title: 'node-express-boilerplate API documentation',
+		title: 'EdTech API documentation',
 		version: packageJson.version,
 		license: {
 			name: 'MIT',

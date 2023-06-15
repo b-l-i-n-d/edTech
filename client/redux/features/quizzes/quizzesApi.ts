@@ -62,7 +62,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 url: `quizzes/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: (result, error, id) => ["Quizzes"],
+            invalidatesTags: ["Quizzes"],
         }),
     }),
 });

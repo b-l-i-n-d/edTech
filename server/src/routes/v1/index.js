@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import config from '../../config/config.js';
+import assignmentRoute from './assignment.route.js';
 import authRoute from './auth.route.js';
 import docsRoute from './docs.route.js';
 import quizzRoute from './quizz.route.js';
@@ -24,6 +25,10 @@ const defaultRoutes = [
 	{
 		path: '/quizzes',
 		route: quizzRoute,
+	},
+	{
+		path: '/assignments',
+		route: assignmentRoute,
 	},
 ];
 
