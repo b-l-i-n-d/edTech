@@ -12,7 +12,9 @@ const createVideo = catchAsync(async (req, res) => {
 const getVideos = catchAsync(async (req, res) => {
 	const filter = pick(req.query, ['title', 'description']);
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
-	const result = await videoService.queryVideos(filter, options);
+	const searchValue = pick(req.query, ['search']).search;
+
+	const result = await videoService.queryVideos(filter, options, searchValue);
 	res.send(result);
 });
 

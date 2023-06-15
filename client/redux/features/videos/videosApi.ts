@@ -13,17 +13,28 @@ interface VideoParams {
 export const videosApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getVideos: builder.query<Videos, VideosQueryParams>({
-            query: ({ title, description, sortBy, page, limit }) => ({
+            query: ({ title, description, sortBy, page, limit, search }) => ({
                 url: generateQueryUrl("videos", {
                     title,
                     description,
                     sortBy,
                     page,
                     limit,
+                    search,
                 }),
                 method: "GET",
             }),
-            providesTags: ["Videos"],
+            providesTags: (result) =>
+                result
+                    ? [
+                          "Videos",
+                          ...result.results.map(({ id }) => ({
+                              type: "Videos" as const,
+                              id,
+                          })),
+                          { type: "Videos", id: "LIST" },
+                      ]
+                    : [{ type: "Videos", id: "LIST" }],
         }),
         getVideo: builder.query<Video, string>({
             query: (id) => ({
@@ -48,7 +59,6 @@ export const videosApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [
                 { type: "Videos", id },
-                "Videos",
             ],
         }),
         deleteVideo: builder.mutation({
@@ -63,6 +73,7 @@ export const videosApi = apiSlice.injectEndpoints({
 
 export const {
     useGetVideosQuery,
+    useLazyGetVideosQuery,
     useGetVideoQuery,
     useAddVideoMutation,
     useEditVideoMutation,

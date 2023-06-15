@@ -36,6 +36,8 @@ const videoSchema = Schema(
 videoSchema.plugin(toJSON);
 videoSchema.plugin(paginate);
 
+videoSchema.index({ title: 'text' });
+
 /**
  * @typedef Video
  */

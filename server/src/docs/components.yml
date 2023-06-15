@@ -44,6 +44,41 @@ components:
                 thumbnail: https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault.jpg
                 duration: 300
 
+        QuizzOption:
+            type: object
+            properties:
+                option:
+                    type: string
+                isCorrect:
+                    type: boolean
+
+        Quizz:
+            type: object
+            properties:
+                id:
+                    type: string
+                question:
+                    type: string
+                videoId:
+                    type: string
+                options:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/QuizzOption'
+            example:
+                id: 5ebac534954b54139806c112
+                question: fake question
+                videoId: 5ebac534954b54139806c112
+                options:
+                    - option: fake option
+                      isCorrect: true
+                    - option: fake option
+                      isCorrect: false
+                    - option: fake option
+                      isCorrect: false
+                    - option: fake option
+                      isCorrect: false
+
         Token:
             type: object
             properties:

@@ -1,8 +1,8 @@
-import { VideosQueryParams } from "../interfaces";
+import { QuizzesQueryParams, VideosQueryParams } from "../interfaces";
 
 export default function generateQueryUrl(
     url: string,
-    params: VideosQueryParams
+    params: VideosQueryParams | QuizzesQueryParams
 ) {
     let query = url + "?";
     for (const [key, value] of Object.entries(params)) {

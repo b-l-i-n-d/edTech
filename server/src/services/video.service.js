@@ -20,8 +20,8 @@ const createVideo = async (videoBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryVideos = async (filter, options) => {
-	const videos = await Video.paginate(filter, options);
+const queryVideos = async (filter, options, searchValue) => {
+	const videos = await Video.paginate(filter, options, searchValue);
 	return videos;
 };
 

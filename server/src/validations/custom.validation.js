@@ -15,4 +15,12 @@ const password = (value, helpers) => {
 	return value;
 };
 
-export default { objectId, password };
+const quizzOptions = (value, helpers) => {
+	const correctOptionsCount = value.filter((option) => option.isCorrect).length;
+	if (value.length < 2 || correctOptionsCount < 1) {
+		return helpers.message('At least two options are required and at least one option must be correct');
+	}
+	return value;
+};
+
+export default { objectId, password, quizzOptions };

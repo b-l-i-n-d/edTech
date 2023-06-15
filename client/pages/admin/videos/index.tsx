@@ -23,18 +23,18 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Auth } from "../../../components";
 import { apiConfig } from "../../../configs";
-import { Video } from "../../../interfaces";
+import { ModalType, Video } from "../../../interfaces";
 import {
     useAddVideoMutation,
     useDeleteVideoMutation,
-    useGetVideosQuery,
     useEditVideoMutation,
+    useGetVideosQuery,
 } from "../../../redux/features/videos/videosApi";
 
 const Videos: NextPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [modalType, setModalType] = useState<"add" | "edit" | "show">("add");
+    const [modalType, setModalType] = useState<ModalType>("add");
 
     const [form] = useForm();
 
@@ -42,12 +42,11 @@ const Videos: NextPage = () => {
         page: currentPage,
         limit: apiConfig.PAGE_SIZE,
     });
-
     const [
         addVideo,
         {
             data: addedVideo,
-            isLoading: isAddedVideoLoading,
+            isLoading: isAddVideoLoading,
             error: addVideoError,
         },
     ] = useAddVideoMutation();
@@ -62,28 +61,23 @@ const Videos: NextPage = () => {
     const [
         deleteVideo,
         {
-            data: deletedVideo,
             isLoading: isDeleteVideoLoading,
             error: deleteVideoError,
+            isSuccess: isDeleteVideoSuccess,
         },
     ] = useDeleteVideoMutation();
 
-    const handleShowModal = (vidoe: Video) => {
-        form.setFieldsValue(vidoe);
+    const handleModal = (type: ModalType, data?: Video) => {
+        setModalType(type);
         setIsModalOpen(true);
-        setModalType("show");
-    };
 
-    const handleAddModal = () => {
-        form.resetFields();
-        setIsModalOpen(true);
-        setModalType("add");
-    };
+        if (type === "add") {
+            form.resetFields();
+        }
 
-    const handleEditModal = (vidoe: Video) => {
-        form.setFieldsValue(vidoe);
-        setIsModalOpen(true);
-        setModalType("edit");
+        if (type === "edit" || type === "show") {
+            form.setFieldsValue(data);
+        }
     };
 
     const handleDelete = (id: string) => {
@@ -141,6 +135,15 @@ const Videos: NextPage = () => {
             title: "Url",
             dataIndex: "url",
             key: "url",
+            render: (url: string) => (
+                <Typography.Link
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {url}
+                </Typography.Link>
+            ),
         },
         {
             title: "Duration",
@@ -162,17 +165,16 @@ const Videos: NextPage = () => {
                         type="primary"
                         ghost
                         icon={<EyeOutlined />}
-                        onClick={() => handleShowModal(record)}
+                        onClick={() => handleModal("show", record)}
                     />
 
                     <Button
                         type="primary"
                         ghost
                         icon={<EditOutlined />}
-                        onClick={() => handleEditModal(record)}
+                        onClick={() => handleModal("edit", record)}
                     />
                     <Button
-                        type="primary"
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => handleDelete(record.id)}
@@ -183,49 +185,49 @@ const Videos: NextPage = () => {
     ];
 
     useEffect(() => {
-        if (addedVideo || editedVideo || deletedVideo) {
+        if (addedVideo || editedVideo) {
             setIsModalOpen(false);
             form.resetFields();
         }
-    }, [addedVideo, editedVideo, deletedVideo, form]);
+    }, [addedVideo, editedVideo, form]);
 
     useEffect(() => {
-        if (addVideoError || editVideoError || deleteVideoError) {
+        if (addVideoError || editVideoError) {
             setIsModalOpen(false);
             form.resetFields();
         }
     }, [addVideoError, editVideoError, deleteVideoError, form]);
 
     useEffect(() => {
-        if (isAddedVideoLoading) {
+        if (isAddVideoLoading) {
             notification.info({
-                key: "createVideo",
+                key: "addVideo",
                 message: "Creating Video",
                 description: "Please wait a moment! 👍",
                 icon: <LoadingOutlined spin />,
                 duration: 0,
             });
         }
-        if (!isAddedVideoLoading && !addVideoError && addedVideo) {
+        if (!isAddVideoLoading && !addVideoError && addedVideo) {
             notification.success({
-                key: "createVideo",
+                key: "addVideo",
                 message: "Video added successfully",
                 description: "Oh, that was fast. 🚀",
             });
         }
-        if (!isAddedVideoLoading && addVideoError) {
+        if (!isAddVideoLoading && addVideoError) {
             notification.error({
-                key: "createVideo",
+                key: "addVideo",
                 message: "Failed to create video",
                 description: "Please try again! 🥺",
             });
         }
-    }, [isAddedVideoLoading, addVideoError, addedVideo]);
+    }, [isAddVideoLoading, addVideoError, addedVideo]);
 
     useEffect(() => {
         if (isEditVideoLoading) {
             notification.info({
-                key: "updateVideo",
+                key: "editVideo",
                 message: "Updating Video",
                 description: "Please wait a moment! 👍",
                 icon: <LoadingOutlined spin />,
@@ -234,14 +236,14 @@ const Videos: NextPage = () => {
         }
         if (!isEditVideoLoading && !editVideoError && editedVideo) {
             notification.success({
-                key: "updateVideo",
+                key: "editVideo",
                 message: "Video updated successfully",
                 description: "Oh, that was fast. 🚀",
             });
         }
         if (!isEditVideoLoading && editVideoError) {
             notification.error({
-                key: "updateVideo",
+                key: "editVideo",
                 message: "Failed to update video",
                 description: "Please try again! 🥺",
             });
@@ -258,7 +260,11 @@ const Videos: NextPage = () => {
                 duration: 0,
             });
         }
-        if (!isDeleteVideoLoading && !deleteVideoError) {
+        if (
+            !isDeleteVideoLoading &&
+            !deleteVideoError &&
+            isDeleteVideoSuccess
+        ) {
             notification.success({
                 key: "deleteVideo",
                 message: "Video deleted successfully",
@@ -272,7 +278,7 @@ const Videos: NextPage = () => {
                 description: "Please try again! 🥺",
             });
         }
-    }, [isDeleteVideoLoading, deleteVideoError, deletedVideo]);
+    }, [isDeleteVideoLoading, deleteVideoError, isDeleteVideoSuccess]);
 
     return (
         <Auth.AdminOnly>
@@ -287,7 +293,7 @@ const Videos: NextPage = () => {
                 <Typography.Title level={5}>Videos</Typography.Title>
                 <Button
                     type="primary"
-                    onClick={handleAddModal}
+                    onClick={() => handleModal("add")}
                     icon={<PlusCircleOutlined />}
                 >
                     Add Video
@@ -321,7 +327,7 @@ const Videos: NextPage = () => {
                 }
                 confirmLoading={
                     modalType === "add"
-                        ? isAddedVideoLoading
+                        ? isAddVideoLoading
                         : modalType === "edit"
                         ? isEditVideoLoading
                         : false
@@ -334,6 +340,7 @@ const Videos: NextPage = () => {
                         ? "Edit Video"
                         : null}
                 </Typography.Title>
+
                 {modalType === "show" ? (
                     <Descriptions title="Video Info" layout="vertical">
                         <Descriptions.Item label="Title" span={24}>

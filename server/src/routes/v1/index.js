@@ -2,6 +2,7 @@ import { Router } from 'express';
 import config from '../../config/config.js';
 import authRoute from './auth.route.js';
 import docsRoute from './docs.route.js';
+import quizzRoute from './quizz.route.js';
 import userRoute from './user.route.js';
 import videoRoute from './video.route.js';
 
@@ -19,6 +20,10 @@ const defaultRoutes = [
 	{
 		path: '/videos',
 		route: videoRoute,
+	},
+	{
+		path: '/quizzes',
+		route: quizzRoute,
 	},
 ];
 

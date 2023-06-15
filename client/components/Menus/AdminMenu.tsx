@@ -42,19 +42,23 @@ const AdminMenu: React.FC = () => {
             ),
         },
         {
-            key: "/quizzes",
+            key: "/admin/quizzes",
             label: (
-                <Button type="text">
-                    <Typography.Text strong>Quizzes</Typography.Text>
-                </Button>
+                <Link href="/admin/quizzes">
+                    <Button type="text">
+                        <Typography.Text strong>Quizzes</Typography.Text>
+                    </Button>
+                </Link>
             ),
         },
         {
-            key: "/assignments",
+            key: "/admin/assignments",
             label: (
-                <Button type="text">
-                    <Typography.Text strong>Assignments</Typography.Text>
-                </Button>
+                <Link href="/admin/assignments">
+                    <Button type="text">
+                        <Typography.Text strong>Assignments</Typography.Text>
+                    </Button>
+                </Link>
             ),
         },
         {
