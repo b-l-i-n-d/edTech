@@ -70,10 +70,6 @@ const Quizzes: NextPage = () => {
             isSuccess: isDeleteQuizzSuccess,
         },
     ] = useDeleteQuizzMutation();
-    const { data: videos, isLoading: isGetVideosLoading } = useGetVideosQuery({
-        page: 1,
-        limit: apiConfig.PAGE_SIZE,
-    });
 
     const handleModal = (type: ModalType, data?: Quizz) => {
         setModalType(type);
@@ -129,9 +125,9 @@ const Quizzes: NextPage = () => {
             ),
         },
         {
-            title: "Action",
+            title: "Actions",
             dataIndex: "action",
-            key: "action",
+            key: "actions",
             render: (text: string, record: Quizz) => (
                 <Space>
                     <Button
@@ -210,6 +206,13 @@ const Quizzes: NextPage = () => {
                 key: "editQuizz",
                 message: "Quizz updated successfully",
                 description: "Oh, that was fast. 🚀",
+            });
+        }
+        if (!isEditQuizzLoading && editQuizzError) {
+            notification.error({
+                key: "editQuizz",
+                message: "Failed to update quizz",
+                description: "Please try again! 🥺",
             });
         }
     }, [isEditQuizzLoading, editQuizzError, editedQuizz]);

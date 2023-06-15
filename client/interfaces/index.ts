@@ -60,6 +60,39 @@ export interface Options {
     isCorrect: boolean;
 }
 
+export interface AssignmentsQueryParams {
+    title?: string;
+    videoId?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+}
+
+export interface Assignments {
+    results: Assignment[];
+    totalResults: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+}
+
+export interface Assignment {
+    id: string;
+    title: string;
+    video: string | Video;
+    description?: string;
+    dueDate: string;
+    totalMarks: number;
+}
+
+export interface AssignmentParams {
+    title: string;
+    video: string;
+    description?: string;
+    dueDate: string;
+    totalMarks: number;
+}
+
 export type ModalType = "add" | "edit" | "show";
 
 export interface DebounceSelectProps<ValueType = any>

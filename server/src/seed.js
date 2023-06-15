@@ -4,7 +4,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import config from './config/config.js';
 import logger from './config/logger.js';
-import { Quizz, Video } from './models/index.js';
+import { Assignment, Quizz, Video } from './models/index.js';
 
 mongoose
 	.connect(config.mongoose.url, config.mongoose.options)
@@ -88,10 +88,38 @@ const createQuizzes = async (videos) => {
 	}
 };
 
+const createAssignments = async (videos) => {
+	try {
+		await Assignment.deleteMany();
+
+		const assignments = await Promise.all(
+			Array.from({ length: 50 }, async () => {
+				const video = videos[Math.floor(Math.random() * videos.length)];
+				const assessment = await Assignment.create({
+					title: faker.lorem.sentence(),
+					video: video._id,
+					description: faker.lorem.paragraph(),
+					dueDate: faker.date.soon({
+						days: 7,
+					}),
+					totalMarks: faker.number.int({ min: 10, max: 100 }),
+				});
+				return assessment;
+			})
+		);
+
+		logger.info('Assignments created successfully');
+		return assignments;
+	} catch (error) {
+		logger.error(error);
+	}
+};
+
 const seed = async () => {
 	try {
 		const videos = await createVideos();
 		await createQuizzes(videos);
+		await createAssignments(videos);
 
 		logger.info('Seeded successfully');
 	} catch (error) {
