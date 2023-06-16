@@ -23,6 +23,7 @@ import { useForm } from "antd/es/form/Form";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Auth, Common } from "../../../components";
 import { apiConfig } from "../../../configs";
 import { ModalType, Quizz, QuizzParams } from "../../../interfaces";
@@ -32,7 +33,6 @@ import {
     useEditQuizzMutation,
     useGetQuizzesQuery,
 } from "../../../redux/features/quizzes/quizzesApi";
-import { useGetVideosQuery } from "../../../redux/features/videos/videosApi";
 
 const Quizzes: NextPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -83,6 +83,7 @@ const Quizzes: NextPage = () => {
             form.setFieldsValue({
                 id: data?.id,
                 question: data?.question,
+                description: data?.description,
                 video:
                     typeof data?.video === "string"
                         ? data?.video
@@ -108,9 +109,24 @@ const Quizzes: NextPage = () => {
 
     const tableColumns = [
         {
-            title: "Quiestion",
+            title: "Question",
             dataIndex: "question",
             key: "question",
+            render: (text: string) => (
+                <Typography.Text>
+                    <ReactMarkdown>{text}</ReactMarkdown>
+                </Typography.Text>
+            ),
+        },
+        {
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
+            render: (text: string) => (
+                <Typography.Text>
+                    <ReactMarkdown>{text}</ReactMarkdown>
+                </Typography.Text>
+            ),
         },
         {
             title: "Video",
@@ -300,19 +316,34 @@ const Quizzes: NextPage = () => {
                         ? isEditQuizzLoading
                         : false
                 }
-            >
-                <Typography.Title level={5}>
-                    {modalType === "add"
+                title={
+                    modalType === "add"
                         ? "Add Quizz"
                         : modalType === "edit"
                         ? "Edit Quizz"
-                        : null}
-                </Typography.Title>
+                        : null
+                }
+            >
+                <Typography.Text type="secondary">
+                    {(modalType === "add" || modalType === "edit") &&
+                        "Use markdown syntax for question and options."}
+                </Typography.Text>
 
                 {modalType === "show" ? (
                     <Descriptions title="Quizz Info" layout="vertical">
                         <Descriptions.Item label="Question" span={24}>
-                            {form.getFieldValue("question")}
+                            <Typography.Text>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("question")}
+                                </ReactMarkdown>
+                            </Typography.Text>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Description" span={24}>
+                            <Typography.Text>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("description")}
+                                </ReactMarkdown>
+                            </Typography.Text>
                         </Descriptions.Item>
                         <Descriptions.Item label="Video" span={24}>
                             {form.getFieldValue("videoTitle")}
@@ -326,7 +357,11 @@ const Quizzes: NextPage = () => {
                                             key={option.option}
                                             checked={option.isCorrect}
                                         >
-                                            {option.option}
+                                            <Typography.Text>
+                                                <ReactMarkdown>
+                                                    {option.option}
+                                                </ReactMarkdown>
+                                            </Typography.Text>
                                         </Checkbox>
                                     ))}
                             </Space>
@@ -337,6 +372,7 @@ const Quizzes: NextPage = () => {
                         <Form.Item
                             label="Question"
                             name="question"
+                            tooltip="Use markdown syntax to format text"
                             rules={[
                                 {
                                     required: true,
@@ -345,6 +381,22 @@ const Quizzes: NextPage = () => {
                             ]}
                         >
                             <Input placeholder="ex: Whats on your mind" />
+                        </Form.Item>
+                        <Form.Item
+                            label="Description"
+                            name="description"
+                            tooltip="Use markdown syntax to format text"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input description!",
+                                },
+                            ]}
+                        >
+                            <Input.TextArea
+                                placeholder="ex: Write something about your question"
+                                rows={4}
+                            />
                         </Form.Item>
                         <Form.Item
                             label="Video"
@@ -356,16 +408,6 @@ const Quizzes: NextPage = () => {
                                 },
                             ]}
                         >
-                            {/* <Select
-                                placeholder="Select video"
-                                options={videos?.results.map(
-                                    (video: Video) => ({
-                                        key: video.id,
-                                        label: video.title,
-                                        value: video.id,
-                                    })
-                                )}
-                            /> */}
                             <Common.DebounceSelect
                                 placeholder="Select video"
                                 form={form}
@@ -419,6 +461,7 @@ const Quizzes: NextPage = () => {
                                                 }}
                                                 label={`Option ${key + 1}`}
                                                 name={[name, "option"]}
+                                                tooltip="Use markdown syntax to format text"
                                                 required
                                                 rules={[
                                                     {

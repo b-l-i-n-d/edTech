@@ -40,18 +40,18 @@ export const quizzesApi = apiSlice.injectEndpoints({
             providesTags: (result, error, id) => [{ type: "Quizzes", id }],
         }),
         addQuizz: builder.mutation<Quizzes, QuizzParams>({
-            query: ({ question, video, options }) => ({
+            query: ({ question, description, video, options }) => ({
                 url: "quizzes",
                 method: "POST",
-                body: { question, video, options },
+                body: { question, description, video, options },
             }),
             invalidatesTags: ["Quizzes"],
         }),
         editQuizz: builder.mutation<Quizz, Quizz>({
-            query: ({ id, question, video, options }) => ({
+            query: ({ id, question, description, video, options }) => ({
                 url: `quizzes/${id}`,
                 method: "PATCH",
-                body: { question, video, options },
+                body: { question, description, video, options },
             }),
             invalidatesTags: (result, error, { id }) => [
                 { type: "Quizzes", id },

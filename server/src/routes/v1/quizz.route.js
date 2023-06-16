@@ -48,6 +48,8 @@ export default router;
  *             properties:
  *               question:
  *                 type: string
+ *               description:
+ *                 type: string
  *               videoId:
  *                 type: string
  *               options:
@@ -64,6 +66,7 @@ export default router;
  *                       type: boolean
  *             example:
  *               question: What is the capital of Bangladesh?
+ *               description: After 1971.
  *               videoId: 5fbd9d1f9d6b28001c2d5e97
  *               options: [
  *                 {
@@ -211,6 +214,8 @@ export default router;
  *             properties:
  *               question:
  *                 type: string
+ *               description:
+ *                 type: string
  *               videoId:
  *                 type: string
  *               options:
@@ -227,6 +232,7 @@ export default router;
  *                       type: boolean
  *             example:
  *               question: Updated question
+ *               description: Updated description
  *               videoId: 5fbd9d1f9d6b28001c2d5e97
  *               options: [
  *                 {

@@ -23,6 +23,10 @@ const quizzSchema = Schema(
 			required: true,
 			trim: true,
 		},
+		description: {
+			type: String,
+			trim: true,
+		},
 		video: {
 			type: Schema.Types.ObjectId,
 			ref: 'Video',

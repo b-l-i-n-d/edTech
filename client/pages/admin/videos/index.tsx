@@ -21,6 +21,7 @@ import { useForm } from "antd/es/form/Form";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Auth } from "../../../components";
 import { apiConfig } from "../../../configs";
 import { ModalType, Video } from "../../../interfaces";
@@ -100,6 +101,11 @@ const Videos: NextPage = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
+            render: (title: string) => (
+                <Typography.Text>
+                    <ReactMarkdown>{title}</ReactMarkdown>
+                </Typography.Text>
+            ),
         },
         {
             title: "Description",
@@ -111,7 +117,7 @@ const Videos: NextPage = () => {
                         rows: 2,
                     }}
                 >
-                    {description}
+                    <ReactMarkdown>{description}</ReactMarkdown>
                 </Typography.Paragraph>
             ),
         },
@@ -311,6 +317,7 @@ const Videos: NextPage = () => {
                 }}
             />
             <Modal
+                style={{ top: 20 }}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 okText={
@@ -332,19 +339,27 @@ const Videos: NextPage = () => {
                         ? isEditVideoLoading
                         : false
                 }
-            >
-                <Typography.Title level={5}>
-                    {modalType === "add"
+                title={
+                    modalType === "add"
                         ? "Add Video"
                         : modalType === "edit"
                         ? "Edit Video"
-                        : null}
-                </Typography.Title>
+                        : null
+                }
+            >
+                <Typography.Text type="secondary">
+                    {(modalType === "add" || modalType === "edit") &&
+                        "Use markdown syntax for title and description."}
+                </Typography.Text>
 
                 {modalType === "show" ? (
                     <Descriptions title="Video Info" layout="vertical">
                         <Descriptions.Item label="Title" span={24}>
-                            {form.getFieldValue("title")}
+                            <Typography.Text>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("title")}
+                                </ReactMarkdown>
+                            </Typography.Text>
                         </Descriptions.Item>
                         <Descriptions.Item
                             label="Description"
@@ -354,7 +369,11 @@ const Videos: NextPage = () => {
                                 overflow: "auto",
                             }}
                         >
-                            {form.getFieldValue("description")}
+                            <Typography.Paragraph>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("description")}
+                                </ReactMarkdown>
+                            </Typography.Paragraph>
                         </Descriptions.Item>
                         <Descriptions.Item label="Thumbnail" span={24}>
                             {form.getFieldValue("thumbnail")}
@@ -371,6 +390,7 @@ const Videos: NextPage = () => {
                         <Form.Item
                             label="Title"
                             name="title"
+                            tooltip="Use markdown syntax to format text"
                             rules={[
                                 {
                                     required: true,
@@ -383,6 +403,7 @@ const Videos: NextPage = () => {
                         <Form.Item
                             label="Description"
                             name="description"
+                            tooltip="Use markdown syntax to format text"
                             rules={[
                                 {
                                     required: true,
@@ -390,7 +411,10 @@ const Videos: NextPage = () => {
                                 },
                             ]}
                         >
-                            <Input placeholder="ex: Video description" />
+                            <Input.TextArea
+                                placeholder="ex: Video description"
+                                rows={4}
+                            />
                         </Form.Item>
                         <Form.Item
                             label="Thumbnail"

@@ -74,6 +74,7 @@ const createQuizzes = async (videos) => {
 				const video = videos[Math.floor(Math.random() * videos.length)];
 				const quizz = await Quizz.create({
 					question: faker.lorem.sentence(),
+					description: faker.lorem.paragraph(),
 					video: video._id,
 					options: generateOptions(),
 				});

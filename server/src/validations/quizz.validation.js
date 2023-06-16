@@ -4,6 +4,7 @@ import customValidation from './custom.validation.js';
 const createQuizz = {
 	body: Joi.object().keys({
 		question: Joi.string().required(),
+		description: Joi.string(),
 		video: Joi.string().custom(customValidation.objectId),
 		options: Joi.array()
 			.items(
@@ -40,6 +41,7 @@ const updateQuizz = {
 	body: Joi.object()
 		.keys({
 			question: Joi.string(),
+			description: Joi.string(),
 			video: Joi.string().custom(customValidation.objectId),
 			options: Joi.array().items(
 				Joi.object().keys({

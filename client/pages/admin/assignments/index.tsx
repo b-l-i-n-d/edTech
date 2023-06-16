@@ -26,6 +26,7 @@ import weekday from "dayjs/plugin/weekday";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Auth, Common } from "../../../components";
 import { apiConfig } from "../../../configs";
 import { Assignment, AssignmentParams, ModalType } from "../../../interfaces";
@@ -122,6 +123,11 @@ const Assignments: NextPage = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
+            render: (text: string) => (
+                <Typography.Text>
+                    <ReactMarkdown>{text}</ReactMarkdown>
+                </Typography.Text>
+            ),
         },
         {
             title: "Description",
@@ -129,7 +135,7 @@ const Assignments: NextPage = () => {
             key: "description",
             render: (text: string) => (
                 <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                    {text}
+                    <ReactMarkdown>{text}</ReactMarkdown>
                 </Typography.Paragraph>
             ),
         },
@@ -154,7 +160,7 @@ const Assignments: NextPage = () => {
                     if (dayjs(text).isBefore(dayjs())) {
                         return (
                             <Tag color="error">
-                                {dayjs(text).format("DD/MM/YYYY")}
+                                {dayjs(text).format("DD MMM YYYY")}
                             </Tag>
                         );
                     } else {
@@ -357,22 +363,34 @@ const Assignments: NextPage = () => {
                         ? isEditAssignmentLoading
                         : false
                 }
-            >
-                <Typography.Title level={5}>
-                    {modalType === "add"
+                title={
+                    modalType === "add"
                         ? "Add Assignment"
                         : modalType === "edit"
                         ? "Edit Assignment"
-                        : null}
-                </Typography.Title>
+                        : null
+                }
+            >
+                <Typography.Text type="secondary">
+                    {(modalType === "add" || modalType === "edit") &&
+                        "Use markdown syntax for title and description."}
+                </Typography.Text>
 
                 {modalType === "show" ? (
                     <Descriptions title="Assignment Details" layout="vertical">
                         <Descriptions.Item label="Title" span={24}>
-                            {form.getFieldValue("title")}
+                            <Typography.Text>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("title")}
+                                </ReactMarkdown>
+                            </Typography.Text>
                         </Descriptions.Item>
                         <Descriptions.Item label="Description" span={24}>
-                            {form.getFieldValue("description")}
+                            <Typography.Text>
+                                <ReactMarkdown>
+                                    {form.getFieldValue("description")}
+                                </ReactMarkdown>
+                            </Typography.Text>
                         </Descriptions.Item>
                         <Descriptions.Item label="Video" span={24}>
                             {form.getFieldValue("videoTitle")}
@@ -391,6 +409,7 @@ const Assignments: NextPage = () => {
                         <Form.Item
                             label="Title"
                             name="title"
+                            tooltip="Use markdown syntax to format text"
                             rules={[
                                 {
                                     required: true,
@@ -403,6 +422,7 @@ const Assignments: NextPage = () => {
                         <Form.Item
                             label="Description"
                             name="description"
+                            tooltip="Use markdown syntax to format text"
                             rules={[
                                 {
                                     required: true,
@@ -410,7 +430,10 @@ const Assignments: NextPage = () => {
                                 },
                             ]}
                         >
-                            <Input.TextArea placeholder="Please input description and use Markdown." />
+                            <Input.TextArea
+                                placeholder="Please input description and use Markdown."
+                                rows={4}
+                            />
                         </Form.Item>
                         <Form.Item
                             label="Video"

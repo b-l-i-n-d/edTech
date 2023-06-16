@@ -45,12 +45,14 @@ export interface Quizzes {
 export interface Quizz {
     id: string;
     question: string;
+    description?: string;
     video: string | Video;
     options: Options[];
 }
 
 export interface QuizzParams {
     question: string;
+    description?: string;
     video: string;
     options: Options[];
 }
