@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import customValidation from './custom.validation';
+import customValidation from './custom.validation.js';
 
 const createAssignmentMark = {
 	body: Joi.object().keys({

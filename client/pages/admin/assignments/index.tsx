@@ -19,7 +19,6 @@ import {
     Typography,
     notification,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
@@ -45,7 +44,7 @@ const Assignments: NextPage = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalType, setModalType] = useState<ModalType>("add");
 
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const { data: assignments, isLoading: isGetAssignmentsLoading } =
         useGetAssignmentsQuery({
@@ -110,8 +109,6 @@ const Assignments: NextPage = () => {
 
     const handlSubmit = (values: AssignmentParams) => {
         if (modalType === "add") {
-            console.log(values);
-
             addAssignment(values);
         } else if (modalType === "edit") {
             editAssignment({ ...values, id: form.getFieldValue("id") });
@@ -124,9 +121,13 @@ const Assignments: NextPage = () => {
             dataIndex: "title",
             key: "title",
             render: (text: string) => (
-                <Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 2,
+                    }}
+                >
                     <ReactMarkdown>{text}</ReactMarkdown>
-                </Typography.Text>
+                </Typography.Paragraph>
             ),
         },
         {
@@ -134,8 +135,8 @@ const Assignments: NextPage = () => {
             dataIndex: "description",
             key: "description",
             render: (text: string) => (
-                <Typography.Paragraph ellipsis={{ rows: 4 }}>
-                    <ReactMarkdown>{text}</ReactMarkdown>
+                <Typography.Paragraph ellipsis={{ rows: 2 }}>
+                    {text}
                 </Typography.Paragraph>
             ),
         },
@@ -144,11 +145,17 @@ const Assignments: NextPage = () => {
             dataIndex: "video",
             key: "video",
             render: (text: string, record: Assignment) => (
-                <Typography.Text>
-                    {typeof record.video === "string"
-                        ? record.video
-                        : record.video?.title}
-                </Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 2,
+                    }}
+                >
+                    <ReactMarkdown>
+                        {typeof record.video === "string"
+                            ? record.video
+                            : record.video?.title}
+                    </ReactMarkdown>
+                </Typography.Paragraph>
             ),
         },
         {

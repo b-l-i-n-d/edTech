@@ -17,7 +17,6 @@ import {
     Typography,
     notification,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -37,7 +36,7 @@ const Videos: NextPage = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalType, setModalType] = useState<ModalType>("add");
 
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const { data: videos, isLoading: isGetVideosLoading } = useGetVideosQuery({
         page: currentPage,
@@ -102,9 +101,13 @@ const Videos: NextPage = () => {
             dataIndex: "title",
             key: "title",
             render: (title: string) => (
-                <Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 2,
+                    }}
+                >
                     <ReactMarkdown>{title}</ReactMarkdown>
-                </Typography.Text>
+                </Typography.Paragraph>
             ),
         },
         {
@@ -114,10 +117,10 @@ const Videos: NextPage = () => {
             render: (description: string) => (
                 <Typography.Paragraph
                     ellipsis={{
-                        rows: 4,
+                        rows: 2,
                     }}
                 >
-                    <ReactMarkdown>{description}</ReactMarkdown>
+                    {description}
                 </Typography.Paragraph>
             ),
         },
@@ -156,7 +159,7 @@ const Videos: NextPage = () => {
             dataIndex: "duration",
             key: "duration",
             render: (duration: number) => (
-                <Typography.Text>
+                <Typography.Text ellipsis>
                     {new Date(duration * 1000).toISOString().substr(11, 8)}
                 </Typography.Text>
             ),

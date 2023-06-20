@@ -67,7 +67,7 @@ const getAssignmentMarkById = async (id) => {
  * Update assignmentMark by id
  * @param {ObjectId} assignmentMarkId
  * @param {Object} updateBody
- * @returns {Promise<Assignment>}
+ * @returns {Promise<AssignmentMark>}
  */
 const updateAssignmentMarkById = async (assignmentMarkId, updateBody) => {
 	const assignmentMark = await getAssignmentMarkById(assignmentMarkId);
@@ -98,7 +98,7 @@ const updateAssignmentMarkById = async (assignmentMarkId, updateBody) => {
  * @param {ObjectId} assignmentMarkId
  * @returns {Promise<AssignmentMark>}
  */
-const deleteAssignmentById = async (assignmentMarkId) => {
+const deleteAssignmentMarkById = async (assignmentMarkId) => {
 	const assignmentMark = await getAssignmentMarkById(assignmentMarkId);
 	if (!assignmentMark) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Assignment Mark not found');
@@ -112,5 +112,5 @@ export default {
 	queryAssignmentMarks,
 	getAssignmentMarkById,
 	updateAssignmentMarkById,
-	deleteAssignmentById,
+	deleteAssignmentMarkById,
 };

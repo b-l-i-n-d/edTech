@@ -1,28 +1,32 @@
 import express from 'express';
-import { assignmentController } from '../../controllers/index.js';
+import { assignmentMarkController } from '../../controllers/index.js';
 import auth from '../../middlewares/auth.js';
 import validate from '../../middlewares/validate.js';
-import { assignmentValidation } from '../../validations/index.js';
+import { assignmentMarkValidation } from '../../validations/index.js';
 
 const router = express.Router();
 
 router
 	.route('/')
-	.post(auth(), validate(assignmentValidation.createAssignment), assignmentController.createAssignment)
-	.get(auth('manageAssignmentsMarks'), validate(assignmentValidation.getAssignments), assignmentController.getAssignments);
+	.post(auth(), validate(assignmentMarkValidation.createAssignmentMark), assignmentMarkController.createAssignmentMark)
+	.get(
+		auth('manageAssignmentsMarks'),
+		validate(assignmentMarkValidation.getAssignmentMarks),
+		assignmentMarkController.getAssignmentMarks
+	);
 
 router
-	.route('/:assignmentId')
-	.get(auth(), validate(assignmentValidation.getAssignment), assignmentController.getAssignment)
+	.route('/:assignmentMarkId')
+	.get(auth(), validate(assignmentMarkValidation.getAssignmentMark), assignmentMarkController.getAssignmentMark)
 	.patch(
 		auth('manageAssignmentsMarks'),
-		validate(assignmentValidation.updateAssignment),
-		assignmentController.updateAssignment
+		validate(assignmentMarkValidation.updateAssignmentMark),
+		assignmentMarkController.updateAssignmentMark
 	)
 	.delete(
 		auth('manageAssignmentsMarks'),
-		validate(assignmentValidation.deleteAssignment),
-		assignmentController.deleteAssignment
+		validate(assignmentMarkValidation.deleteAssignmentMark),
+		assignmentMarkController.deleteAssignmentMark
 	);
 
 export default router;

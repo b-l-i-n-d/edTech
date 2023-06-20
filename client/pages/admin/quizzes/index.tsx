@@ -19,7 +19,6 @@ import {
     Typography,
     notification,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -39,7 +38,7 @@ const Quizzes: NextPage = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalType, setModalType] = useState<ModalType>("add");
 
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const { data: quizzes, isLoading: isGetQuizzesLoading } =
         useGetQuizzesQuery({
@@ -113,9 +112,13 @@ const Quizzes: NextPage = () => {
             dataIndex: "question",
             key: "question",
             render: (text: string) => (
-                <Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 2,
+                    }}
+                >
                     <ReactMarkdown>{text}</ReactMarkdown>
-                </Typography.Text>
+                </Typography.Paragraph>
             ),
         },
         {
@@ -125,10 +128,10 @@ const Quizzes: NextPage = () => {
             render: (text: string) => (
                 <Typography.Paragraph
                     ellipsis={{
-                        rows: 4,
+                        rows: 2,
                     }}
                 >
-                    <ReactMarkdown>{text}</ReactMarkdown>
+                    {text}
                 </Typography.Paragraph>
             ),
         },
@@ -137,11 +140,15 @@ const Quizzes: NextPage = () => {
             dataIndex: "video",
             key: "video",
             render: (text: string, record: Quizz) => (
-                <Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 2,
+                    }}
+                >
                     {typeof record.video === "string"
                         ? record.video
                         : record.video?.title}
-                </Typography.Text>
+                </Typography.Paragraph>
             ),
         },
         {

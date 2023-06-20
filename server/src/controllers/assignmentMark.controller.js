@@ -12,6 +12,7 @@ const createAssignmentMark = catchAsync(async (req, res) => {
 const getAssignmentMarks = catchAsync(async (req, res) => {
 	const filter = pick(req.query, ['assignment', 'student', 'status']);
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
+	options.populate = 'assignment:title totalMarks,student:name';
 
 	if (req.user.role !== 'admin' && !filter.studentId) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Only admin can get all assignment marks');
@@ -30,7 +31,7 @@ const getAssignmentMark = catchAsync(async (req, res) => {
 });
 
 const updateAssignmentMark = catchAsync(async (req, res) => {
-	const updateBody = pick(req.body, ['status', 'marks', 'feedback']);
+	const updateBody = pick(req.body, ['marks', 'feedback']);
 	const assignmentMark = await assignmentMarkService.updateAssignmentMarkById(req.params.assignmentMarkId, updateBody);
 	res.send(assignmentMark);
 });
