@@ -6,7 +6,7 @@ const createAssignment = {
 		title: Joi.string().required(),
 		description: Joi.string(),
 		dueDate: Joi.date().required(),
-		video: Joi.string().custom(customValidation.objectId),
+		video: Joi.required().custom(customValidation.objectId),
 		totalMarks: Joi.number().required(),
 	}),
 };
@@ -14,7 +14,7 @@ const createAssignment = {
 const getAssignments = {
 	query: Joi.object().keys({
 		title: Joi.string(),
-		videoId: Joi.string().custom(customValidation.objectId),
+		video: Joi.custom(customValidation.objectId),
 		sortBy: Joi.string(),
 		limit: Joi.number().integer(),
 		page: Joi.number().integer(),
@@ -23,20 +23,20 @@ const getAssignments = {
 
 const getAssignment = {
 	params: Joi.object().keys({
-		assignmentId: Joi.string().custom(customValidation.objectId),
+		assignmentId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 
 const updateAssignment = {
 	params: Joi.object().keys({
-		assignmentId: Joi.string().custom(customValidation.objectId),
+		assignmentId: Joi.required().custom(customValidation.objectId),
 	}),
 	body: Joi.object()
 		.keys({
 			title: Joi.string(),
 			description: Joi.string(),
 			dueDate: Joi.date(),
-			video: Joi.string().custom(customValidation.objectId),
+			video: Joi.custom(customValidation.objectId),
 			totalMarks: Joi.number(),
 		})
 		.min(1),
@@ -44,7 +44,7 @@ const updateAssignment = {
 
 const deleteAssignment = {
 	params: Joi.object().keys({
-		assignmentId: Joi.string().custom(customValidation.objectId),
+		assignmentId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 

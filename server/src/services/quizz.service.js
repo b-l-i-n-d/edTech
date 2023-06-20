@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { Quizz } from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
+import videoService from './video.service.js';
 
 /**
  * Create a quizz
@@ -8,6 +9,11 @@ import ApiError from '../utils/ApiError.js';
  * @returns {Promise<Quizz>}
  */
 const createQuizz = async (quizzBody) => {
+	const video = await videoService.getVideoById(quizzBody.video);
+	if (!video) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+	}
+
 	return Quizz.create(quizzBody);
 };
 
@@ -22,6 +28,7 @@ const createQuizz = async (quizzBody) => {
  */
 const queryQuizzs = async (filter, options) => {
 	const quizzs = await Quizz.paginate(filter, options);
+
 	return quizzs;
 };
 
@@ -45,6 +52,12 @@ const updateQuizzById = async (quizzId, updateBody) => {
 	if (!quizz) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Quizz not found');
 	}
+
+	const video = await videoService.getVideoById(updateBody.video);
+	if (!video) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+	}
+
 	Object.assign(quizz, updateBody);
 	await quizz.save();
 	return quizz;

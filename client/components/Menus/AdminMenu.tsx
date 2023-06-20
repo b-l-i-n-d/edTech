@@ -62,11 +62,15 @@ const AdminMenu: React.FC = () => {
             ),
         },
         {
-            key: "/assignments-mark",
+            key: "/admin/assignments-marks",
             label: (
-                <Button type="text">
-                    <Typography.Text strong>Assignments Mark</Typography.Text>
-                </Button>
+                <Link href="/admin/assignments-marks">
+                    <Button type="text">
+                        <Typography.Text strong>
+                            Assignments Mark
+                        </Typography.Text>
+                    </Button>
+                </Link>
             ),
         },
         {

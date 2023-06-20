@@ -8,15 +8,19 @@ const router = express.Router();
 
 router
 	.route('/')
-	.post(auth('manageAssignments'), validate(assignmentValidation.createAssignment), assignmentController.createAssignment)
-	.get(auth('manageAssignments'), validate(assignmentValidation.getAssignments), assignmentController.getAssignments);
+	.post(auth(), validate(assignmentValidation.createAssignment), assignmentController.createAssignment)
+	.get(auth('manageAssignmentsMarks'), validate(assignmentValidation.getAssignments), assignmentController.getAssignments);
 
 router
 	.route('/:assignmentId')
 	.get(auth(), validate(assignmentValidation.getAssignment), assignmentController.getAssignment)
-	.patch(auth('manageAssignments'), validate(assignmentValidation.updateAssignment), assignmentController.updateAssignment)
+	.patch(
+		auth('manageAssignmentsMarks'),
+		validate(assignmentValidation.updateAssignment),
+		assignmentController.updateAssignment
+	)
 	.delete(
-		auth('manageAssignments'),
+		auth('manageAssignmentsMarks'),
 		validate(assignmentValidation.deleteAssignment),
 		assignmentController.deleteAssignment
 	);
@@ -26,17 +30,17 @@ export default router;
 /**
  * @swagger
  * tags:
- *   name: Assignments
- *   description: Assignment management and retrieval
+ *   name: Assignments Marks
+ *   description: Assignment marks management and retrieval
  */
 
 /**
  * @swagger
- * /assignments:
+ * /assignmentMarks:
  *   post:
- *     summary: Create an assignment
- *     description: Only admins can create other assignments.
- *     tags: [Assignments]
+ *     summary: Create an assignment mark
+ *     description: Logged in users can create assignment mark.
+ *     tags: [Assignments Marks]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -46,52 +50,69 @@ export default router;
  *           schema:
  *             type: object
  *             required:
- *               - title
- *               - video
- *               - dueDate
- *               - totalMarks
+ *               - assignment
+ *               - student
+ *               - repoLink
+ *               - webpageLink
+ *               - status
+ *               - marks
+ *               - feedback
  *             properties:
- *               title:
+ *               assignment:
  *                 type: string
- *               video:
+ *               student:
  *                 type: string
- *               dueDate:
- *                 type: date
- *               totalMarks:
+ *               repoLink:
+ *                 type: string
+ *               webpageLink:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               marks:
  *                 type: number
+ *               feedback:
+ *                 type: string
  *             example:
- *               title: Assignment 1
- *               videoId: 5ebac31d9a8bdc1764d0e6b0
- *               dueDate: 2020-05-12T00:00:00.000Z
- *               totalMarks: 10
+ *               assignment: 60f6e9a9e13a0a3a9c4f7b1a
+ *               student: 60f6e9a9e13a0a3a9c4f7b1a
+ *               repoLink: http://github.com/fake/fake
+ *               webpageLink: http://fake.com
+ *               status: pending
+ *               marks: 0
+ *               feedback: fake feedback
  *     responses:
  *       "201":
  *         description: Created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Assignment'
+ *               $ref: '#/components/schemas/AssignmentMark'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
  *   get:
- *     summary: Get all assignments
- *     description: Only admins can retrieve all assignments.
- *     tags: [Assignments]
+ *     summary: Get assignment marks
+ *     description: Only admins can retrieve all assignments marks.
+ *     tags: [Assignments Marks]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: title
+ *         name: assignmentId
  *         schema:
  *           type: string
- *         description: Assignment title
+ *         description: Assignment id
  *       - in: query
- *         name: videoId
+ *         name: studentId
  *         schema:
  *           type: string
- *         description: Video id
+ *         description: Student id
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Assignment mark status
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -122,7 +143,7 @@ export default router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Assignment'
+ *                     $ref: '#/components/schemas/AssignmentMark'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -143,97 +164,88 @@ export default router;
 
 /**
  * @swagger
- * /assignments/{id}:
+ * /assignmentMarks/{id}:
  *   get:
- *     summary: Get an assignment
- *     description: Logged in users can fetch only their own assignment information. Only admins can fetch other assignments.
- *     tags: [Assignments]
+ *     summary: Get an assignment mark
+ *     description: Logged in users can fetch only their own assignment mark information. Only admins can fetch other assignment marks.
+ *     tags: [Assignments Marks]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Assignment id
+ *         required: true
+ *         description: Assignment mark id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Assignment'
+ *                $ref: '#/components/schemas/AssignmentMark'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *
  *   patch:
- *     summary: Update an assignment
- *     description: Logged in assignments can only update their own information. Only admins can update other assignments.
- *     tags: [Assignments]
+ *     summary: Update an assignment mark
+ *     description: Only admin can update assignment mark.
+ *     tags: [Assignments Marks]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Assignment id
+ *         required: true
+ *         description: Assignment mark id
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - title
- *               - video
- *               - dueDate
- *               - totalMarks
+ *               - status
+ *               - marks
+ *               - feedback
  *             properties:
- *               title:
+ *               status:
  *                 type: string
- *               video:
- *                 type: string
- *               dueDate:
- *                 type: date
- *               totalMarks:
+ *               marks:
  *                 type: number
+ *               feedback:
+ *                 type: string
  *             example:
- *               title: Assignment 1
- *               videoId: 5ebac31d9a8bdc1764d0e6b0
- *               dueDate: 2020-05-12T00:00:00.000Z
- *               totalMarks: 10
+ *              status: published
+ *              marks: 10
+ *              feedback: fake feedback
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Assignment'
+ *                $ref: '#/components/schemas/AssignmentMark'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- *
  *   delete:
- *     summary: Delete an assignment
- *     description: Logged in assignments can delete only themselves. Only admins can delete other assignments.
- *     tags: [Assignments]
+ *     summary: Delete an assignment mark
+ *     description: Only admins can delete assignment marks.
+ *     tags: [Assignments Marks]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Assignment id
+ *         required: true
+ *         description: Assignment mark id
  *     responses:
  *       "204":
  *         description: No content
@@ -241,6 +253,4 @@ export default router;
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
  */

@@ -27,6 +27,7 @@ const assignmentSchema = Schema(
 		totalMarks: {
 			type: Number,
 			required: true,
+			min: 0,
 		},
 	},
 	{

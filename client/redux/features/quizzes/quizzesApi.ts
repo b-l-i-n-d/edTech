@@ -10,10 +10,10 @@ import { apiSlice } from "../../api/apiSlice";
 export const quizzesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getQuizzes: builder.query<Quizzes, QuizzesQueryParams>({
-            query: ({ question, videoId, sortBy, page, limit }) => ({
+            query: ({ question, video, sortBy, page, limit }) => ({
                 url: generateQueryUrl("quizzes", {
                     question,
-                    videoId,
+                    video,
                     sortBy,
                     page,
                     limit,
@@ -57,7 +57,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 { type: "Quizzes", id },
             ],
         }),
-        deleteQuizz: builder.mutation<Quizzes, string>({
+        deleteQuizz: builder.mutation<Quizz, string>({
             query: (id) => ({
                 url: `quizzes/${id}`,
                 method: "DELETE",

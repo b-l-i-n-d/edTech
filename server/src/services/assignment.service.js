@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { Assignment } from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
+import videoService from './video.service.js';
 
 /**
  * Create a assignment
@@ -8,6 +9,11 @@ import ApiError from '../utils/ApiError.js';
  * @returns {Promise<Assignment>}
  */
 const createAssignment = async (assignmentBody) => {
+	const video = await videoService.getVideoById(assignmentBody.videoId);
+	if (!video) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+	}
+
 	return Assignment.create(assignmentBody);
 };
 
@@ -45,6 +51,12 @@ const updateAssignmentById = async (assignmentId, updateBody) => {
 	if (!assignment) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Assignment not found');
 	}
+
+	const video = await videoService.getVideoById(updateBody.videoId);
+	if (!video) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+	}
+
 	Object.assign(assignment, updateBody);
 	await assignment.save();
 	return assignment;

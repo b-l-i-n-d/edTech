@@ -1,5 +1,26 @@
-import { FormInstance, FormProps } from "antd";
+import { FormInstance } from "antd";
 import type { SelectProps } from "antd/es/select";
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    isEmailVerified: boolean;
+    role: "user" | "admin";
+}
+
+export interface AuthState {
+    tokens: {
+        acess: {
+            token: string;
+        };
+        refresh: {
+            token: string;
+        };
+    } | null;
+    user: User | null;
+}
+
 export interface VideosQueryParams {
     title?: string;
     description?: string;
@@ -28,7 +49,7 @@ export interface Video {
 
 export interface QuizzesQueryParams {
     question?: string;
-    videoId?: string;
+    video?: string;
     sortBy?: string;
     page?: number;
     limit?: number;
@@ -64,7 +85,7 @@ export interface Options {
 
 export interface AssignmentsQueryParams {
     title?: string;
-    videoId?: string;
+    video?: string;
     sortBy?: string;
     page?: number;
     limit?: number;
@@ -93,6 +114,40 @@ export interface AssignmentParams {
     description?: string;
     dueDate: string;
     totalMarks: number;
+}
+
+export interface AssignmentsMarksQueryParams {
+    assignment?: string;
+    student?: string;
+    status?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+}
+
+export interface AssignmentsMarks {
+    results: AssignmentMark[];
+    totalResults: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+}
+
+export interface AssignmentMark {
+    id: string;
+    assignment: string | Assignment;
+    student: string | User;
+    marks: number;
+    status: "pending" | "published";
+    feedback?: string;
+}
+
+export interface AssignmentMarkParams {
+    assignment: string;
+    student: string;
+    marks: number;
+    status: "pending" | "published";
+    feedback?: string;
 }
 
 export type ModalType = "add" | "edit" | "show";

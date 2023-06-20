@@ -22,7 +22,7 @@ const getUsers = {
 
 const getUser = {
 	params: Joi.object().keys({
-		userId: Joi.string().custom(customValidation.objectId),
+		userId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 
@@ -41,7 +41,7 @@ const updateUser = {
 
 const deleteUser = {
 	params: Joi.object().keys({
-		userId: Joi.string().custom(customValidation.objectId),
+		userId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 

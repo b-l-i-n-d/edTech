@@ -24,7 +24,7 @@ const getVideos = {
 
 const getVideo = {
 	params: Joi.object().keys({
-		videoId: Joi.string().custom(customValidation.objectId),
+		videoId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 
@@ -45,7 +45,7 @@ const updateVideo = {
 
 const deleteVideo = {
 	params: Joi.object().keys({
-		videoId: Joi.string().custom(customValidation.objectId),
+		videoId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 

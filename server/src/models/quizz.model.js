@@ -1,20 +1,17 @@
 import { Schema, model } from 'mongoose';
 import { paginate, toJSON } from './plugins/index.js';
 
-const optionSchema = Schema(
-	{
-		option: {
-			type: String,
-			required: true,
-			trim: true,
-		},
-		isCorrect: {
-			type: Boolean,
-			default: false,
-		},
+const optionSchema = Schema({
+	option: {
+		type: String,
+		required: true,
+		trim: true,
 	},
-	{ _id: false }
-);
+	isCorrect: {
+		type: Boolean,
+		default: false,
+	},
+});
 
 const quizzSchema = Schema(
 	{

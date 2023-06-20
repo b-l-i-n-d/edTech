@@ -5,7 +5,7 @@ const createQuizz = {
 	body: Joi.object().keys({
 		question: Joi.string().required(),
 		description: Joi.string(),
-		video: Joi.string().custom(customValidation.objectId),
+		video: Joi.required().custom(customValidation.objectId),
 		options: Joi.array()
 			.items(
 				Joi.object().keys({
@@ -21,7 +21,7 @@ const createQuizz = {
 const getQuizzes = {
 	query: Joi.object().keys({
 		question: Joi.string(),
-		videoId: Joi.string().custom(customValidation.objectId),
+		video: Joi.custom(customValidation.objectId),
 		sortBy: Joi.string(),
 		limit: Joi.number().integer(),
 		page: Joi.number().integer(),
@@ -30,7 +30,7 @@ const getQuizzes = {
 
 const getQuizz = {
 	params: Joi.object().keys({
-		quizzId: Joi.string().custom(customValidation.objectId),
+		quizzId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 
@@ -42,7 +42,7 @@ const updateQuizz = {
 		.keys({
 			question: Joi.string(),
 			description: Joi.string(),
-			video: Joi.string().custom(customValidation.objectId),
+			video: Joi.custom(customValidation.objectId),
 			options: Joi.array().items(
 				Joi.object().keys({
 					option: Joi.string().required(),
@@ -55,7 +55,7 @@ const updateQuizz = {
 
 const deleteQuizz = {
 	params: Joi.object().keys({
-		quizzId: Joi.string().custom(customValidation.objectId),
+		quizzId: Joi.required().custom(customValidation.objectId),
 	}),
 };
 

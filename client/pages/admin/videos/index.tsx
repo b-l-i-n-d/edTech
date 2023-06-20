@@ -114,7 +114,7 @@ const Videos: NextPage = () => {
             render: (description: string) => (
                 <Typography.Paragraph
                     ellipsis={{
-                        rows: 2,
+                        rows: 4,
                     }}
                 >
                     <ReactMarkdown>{description}</ReactMarkdown>
@@ -162,9 +162,9 @@ const Videos: NextPage = () => {
             ),
         },
         {
-            title: "Action",
-            dataIndex: "action",
-            key: "action",
+            title: "Actions",
+            dataIndex: "actions",
+            key: "actions",
             render: (_: any, record: Video) => (
                 <Space>
                     <Button

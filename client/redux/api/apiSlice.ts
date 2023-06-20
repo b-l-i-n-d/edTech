@@ -37,6 +37,6 @@ export const apiSlice = createApi({
             return action.payload[reducerPath];
         }
     },
-    tagTypes: ["Assignments", "Auth", "Videos", "Quizzes"],
+    tagTypes: ["Assignments", "AssignmentsMarks", "Auth", "Videos", "Quizzes"],
     endpoints: (builder) => ({}),
 });

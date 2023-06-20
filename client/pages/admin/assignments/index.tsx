@@ -134,7 +134,7 @@ const Assignments: NextPage = () => {
             dataIndex: "description",
             key: "description",
             render: (text: string) => (
-                <Typography.Paragraph ellipsis={{ rows: 2 }}>
+                <Typography.Paragraph ellipsis={{ rows: 4 }}>
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </Typography.Paragraph>
             ),

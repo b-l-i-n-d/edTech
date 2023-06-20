@@ -10,10 +10,10 @@ import { apiSlice } from "../../api/apiSlice";
 export const assignmentsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAssignments: builder.query<Assignments, AssignmentsQueryParams>({
-            query: ({ title, videoId, sortBy, page, limit }) => ({
+            query: ({ title, video, sortBy, page, limit }) => ({
                 url: generateQueryUrl("assignments", {
                     title,
-                    videoId,
+                    video,
                     sortBy,
                     page,
                     limit,
@@ -64,7 +64,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 { type: "Assignments", id },
             ],
         }),
-        deleteAssignment: builder.mutation<Assignments, string>({
+        deleteAssignment: builder.mutation<Assignment, string>({
             query: (id) => ({
                 url: `assignments/${id}`,
                 method: "DELETE",

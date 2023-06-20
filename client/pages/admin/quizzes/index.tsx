@@ -123,9 +123,13 @@ const Quizzes: NextPage = () => {
             dataIndex: "description",
             key: "description",
             render: (text: string) => (
-                <Typography.Text>
+                <Typography.Paragraph
+                    ellipsis={{
+                        rows: 4,
+                    }}
+                >
                     <ReactMarkdown>{text}</ReactMarkdown>
-                </Typography.Text>
+                </Typography.Paragraph>
             ),
         },
         {

@@ -1,26 +1,7 @@
 import { AnyAction, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import storage from "redux-persist/lib/storage";
-
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    isEmailVerified: boolean;
-    role: "user" | "admin";
-}
-
-export interface AuthState {
-    tokens: {
-        acess: {
-            token: string;
-        };
-        refresh: {
-            token: string;
-        };
-    } | null;
-    user: User | null;
-}
+import { AuthState } from "../../../interfaces";
 
 const initialState: AuthState = {
     tokens: null,
