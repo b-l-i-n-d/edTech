@@ -82,6 +82,75 @@ components:
                     - option: fake option
                       isCorrect: false
 
+        QuizzMark:
+            type: object
+            properties:
+                id:
+                    type: string
+                video:
+                    type: string
+                student:
+                    type: string
+                totalQuizz:
+                    type: number
+                totalCorrect:
+                    type: number
+                totalWrong:
+                    type: number
+                totalMarks:
+                    type: number
+                marks:
+                    type: number
+                correctAnswers:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            quizzId:
+                                type: string
+                            correctOptions:
+                                type: array
+                                items:
+                                    type: string
+                selectedAnswers:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            quizzId:
+                                type: string
+                            selectedOptions:
+                                type: array
+                                items:
+                                    type: string
+            example:
+                id: 5ebac534954b54139806c112
+                videoId: 5ebac534954b54139806c112
+                userId: 5ebac534954b54139806c112
+                totalQuizz: 5
+                totalCorrect: 3
+                totalWrong: 2
+                totalMarks: 3
+                marks: 3
+                correctAnswers:
+                    - quizzId: 5ebac534954b54139806c112
+                      correctOptions:
+                          - 5ebac534954b54139806c112
+                          - 5ebac534954b54139806c112
+                    - quizzId: 5ebac534954b54139806c112
+                      correctOptions:
+                          - 5ebac534954b54139806c112
+                          - 5ebac534954b54139806c112
+                selectedAnswers:
+                    - quizzId: 5ebac534954b54139806c112
+                      selectedOptions:
+                          - 5ebac534954b54139806c112
+                          - 5ebac534954b54139806c112
+                    - quizzId: 5ebac534954b54139806c112
+                      selectedOptions:
+                          - 5ebac534954b54139806c112
+                          - 5ebac534954b54139806c112
+
         Assignment:
             type: object
             properties:
