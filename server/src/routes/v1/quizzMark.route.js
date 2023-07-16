@@ -22,7 +22,7 @@ export default router;
 
 /**
  * @swagger
- * /quizzMarks:
+ * /quizzes-marks:
  *   post:
  *     summary: Create a quizz mark
  *     description: Logged in users can create a quizz mark.

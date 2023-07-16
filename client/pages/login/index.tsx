@@ -17,9 +17,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Auth } from "../../components";
 import { isFetchBaseQueryError } from "../../helpers";
+import { useAppSelector } from "../../hooks";
 import Logo from "../../public/assets/logos/logo_transparent.png";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
-import { useAppSelector } from "../../redux/hooks";
 import { selectUser } from "../../redux/features/auth/authSelector";
 
 const Login: NextPage = () => {

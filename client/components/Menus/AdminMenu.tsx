@@ -2,12 +2,12 @@ import { Button, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { useAppSelector } from "../../hooks";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import {
     selectRefreshToken,
     selectUser,
 } from "../../redux/features/auth/authSelector";
-import { useAppSelector } from "../../redux/hooks";
 
 const AdminMenu: React.FC = () => {
     const router = useRouter();

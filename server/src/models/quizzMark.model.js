@@ -13,7 +13,7 @@ const quizzMarlSchema = Schema(
 			ref: 'User',
 			required: true,
 		},
-		totalQuizz: {
+		totalQuizzes: {
 			type: Number,
 			required: true,
 			min: 0,
@@ -40,28 +40,24 @@ const quizzMarlSchema = Schema(
 		},
 		correctAnswers: [
 			{
-				quizzId: {
-					type: Schema.Types.ObjectId,
-					ref: 'Quizz',
-					required: true,
-				},
-				correctOptions: {
-					type: Schema.Types.ObjectId,
-					required: true,
-				},
+				type: Map,
+				of: [
+					{
+						type: Schema.Types.ObjectId,
+						required: true,
+					},
+				],
 			},
 		],
 		selectedAnswers: [
 			{
-				quizzId: {
-					type: Schema.Types.ObjectId,
-					ref: 'Quizz',
-					required: true,
-				},
-				selectedOptions: {
-					type: Schema.Types.ObjectId,
-					required: true,
-				},
+				type: Map,
+				of: [
+					{
+						type: Schema.Types.ObjectId,
+						required: true,
+					},
+				],
 			},
 		],
 	},

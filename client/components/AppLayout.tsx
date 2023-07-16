@@ -2,13 +2,13 @@ import { Divider, Layout, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { useAppSelector } from "../hooks";
 import Logo from "../public/assets/logos/logo_transparent.png";
 import { useRefreshTokensMutation } from "../redux/features/auth/authApi";
 import {
     selectRefreshToken,
     selectUser,
 } from "../redux/features/auth/authSelector";
-import { useAppSelector } from "../redux/hooks";
 import Menus from "./Menus";
 
 interface Props {
@@ -21,7 +21,6 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     const user = useAppSelector(selectUser);
     const refreshToken = useAppSelector(selectRefreshToken);
 
@@ -67,7 +66,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
                 </Link>
                 {menu}
             </Header>
-            <Content className="max-w-6xl w-full mx-auto">
+            <Content className="max-w-7xl w-full mx-auto">
                 <div
                     style={{
                         padding: 24,

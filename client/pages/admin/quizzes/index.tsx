@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Auth, Common } from "../../../components";
 import { apiConfig } from "../../../configs";
-import { ModalType, Quizz, QuizzParams } from "../../../interfaces";
+import { IQuizz, IQuizzParams, ModalType } from "../../../interfaces";
 import {
     useAddQuizzMutation,
     useDeleteQuizzMutation,
@@ -70,7 +70,7 @@ const Quizzes: NextPage = () => {
         },
     ] = useDeleteQuizzMutation();
 
-    const handleModal = (type: ModalType, data?: Quizz) => {
+    const handleModal = (type: ModalType, data?: IQuizz) => {
         setModalType(type);
         setIsModalOpen(true);
 
@@ -78,7 +78,7 @@ const Quizzes: NextPage = () => {
             form.resetFields();
         }
 
-        if (type === "edit" || type === "show") {
+        if (type === "edit" || type === "view") {
             form.setFieldsValue({
                 id: data?.id,
                 question: data?.question,
@@ -98,7 +98,7 @@ const Quizzes: NextPage = () => {
         deleteQuizz(id);
     };
 
-    const handleSubmit = (values: QuizzParams) => {
+    const handleSubmit = (values: IQuizzParams) => {
         if (modalType === "add") {
             addQuizz(values);
         } else if (modalType === "edit") {
@@ -139,7 +139,7 @@ const Quizzes: NextPage = () => {
             title: "Video",
             dataIndex: "video",
             key: "video",
-            render: (text: string, record: Quizz) => (
+            render: (text: string, record: IQuizz) => (
                 <Typography.Paragraph
                     ellipsis={{
                         rows: 2,
@@ -155,13 +155,13 @@ const Quizzes: NextPage = () => {
             title: "Actions",
             dataIndex: "action",
             key: "actions",
-            render: (text: string, record: Quizz) => (
+            render: (text: string, record: IQuizz) => (
                 <Space>
                     <Button
                         type="primary"
                         ghost
                         icon={<EyeOutlined />}
-                        onClick={() => handleModal("show", record)}
+                        onClick={() => handleModal("view", record)}
                     />
                     <Button
                         type="primary"
@@ -305,7 +305,13 @@ const Quizzes: NextPage = () => {
                 }}
             />
             <Modal
+                width={"70%"}
                 style={{ top: 20 }}
+                bodyStyle={{
+                    maxHeight: "80vh",
+                    overflowY: "auto",
+                    paddingRight: "8px",
+                }}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 okText={
@@ -332,7 +338,7 @@ const Quizzes: NextPage = () => {
                         ? "Add Quizz"
                         : modalType === "edit"
                         ? "Edit Quizz"
-                        : null
+                        : "Quizz Details"
                 }
             >
                 <Typography.Text type="secondary">
@@ -340,8 +346,8 @@ const Quizzes: NextPage = () => {
                         "Use markdown syntax for question and options."}
                 </Typography.Text>
 
-                {modalType === "show" ? (
-                    <Descriptions title="Quizz Info" layout="vertical">
+                {modalType === "view" ? (
+                    <Descriptions layout="vertical">
                         <Descriptions.Item label="Question" span={24}>
                             <Typography.Text>
                                 <ReactMarkdown>
@@ -406,7 +412,7 @@ const Quizzes: NextPage = () => {
                         >
                             <Input.TextArea
                                 placeholder="ex: Write something about your question"
-                                rows={4}
+                                autoSize={{ minRows: 4 }}
                             />
                         </Form.Item>
                         <Form.Item

@@ -45,8 +45,9 @@ const updateQuizz = {
 			video: Joi.custom(customValidation.objectId),
 			options: Joi.array().items(
 				Joi.object().keys({
+					_id: Joi.custom(customValidation.objectId),
 					option: Joi.string().required(),
-					isCorrect: Joi.boolean().required(),
+					isCorrect: Joi.boolean().default(false),
 				})
 			),
 		})

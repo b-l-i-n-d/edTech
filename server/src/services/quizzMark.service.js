@@ -24,10 +24,13 @@ const queryQuizzMarks = async (filter, options) => {
  * @returns {Promise<QuizzMark>}
  */
 const createQuizzMark = async (quizzMarkBody) => {
-	const quizzMark = await queryQuizzMarks({
-		video: quizzMarkBody.video,
-		student: quizzMarkBody.student,
-	});
+	const quizzMark = await queryQuizzMarks(
+		{
+			video: quizzMarkBody.video,
+			student: quizzMarkBody.student,
+		},
+		{}
+	);
 
 	if (quizzMark.length > 0) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Quizz mark already exists');
@@ -50,41 +53,57 @@ const createQuizzMark = async (quizzMarkBody) => {
 
 	const correctAnswers = quizzes.map((quizz) => {
 		return {
-			quizzId: quizz._id,
-			correctOptions: quizz.options.filter((option) => option.isCorrect).map((option) => option._id),
+			[quizz._id]: quizz.options.filter((option) => option.isCorrect).map((option) => option._id),
 		};
 	});
 
 	// compare correctAnswers with quizzMarkBody.selectedAnswers
 	const { selectedAnswers } = quizzMarkBody;
 	let totalCorrect = 0;
-	for (let i = 0; i < correctAnswers.length; i += 1) {
-		const correctAnswer = correctAnswers[i];
-		const selectedAnswer = selectedAnswers.find((selectedAns) => selectedAns.quizzId === correctAnswer.quizzId);
-		if (selectedAnswer) {
-			const { correctOptions } = correctAnswer;
-			const { selectedOptions } = selectedAnswer;
-			if (correctOptions.length === selectedOptions.length) {
-				let isCorrect = true;
-				for (let j = 0; j < correctOptions.length; j += 1) {
-					const correctOption = correctOptions[j];
-					if (!selectedOptions.includes(correctOption)) {
-						isCorrect = false;
-						break;
-					}
+	for (let i = 0; i < selectedAnswers.length; i += 1) {
+		const quizz = quizzes[i];
+		const selectedAnswer = selectedAnswers[i];
+		const correctAnswer = correctAnswers[i][quizz._id];
+		if (selectedAnswer.length === correctAnswer.length) {
+			let isCorrect = true;
+			for (let j = 0; j < selectedAnswer.length; j += 1) {
+				if (!correctAnswer.includes(selectedAnswer[j])) {
+					isCorrect = false;
+					break;
 				}
-				if (isCorrect) {
-					totalCorrect += 1;
-				}
+			}
+			if (isCorrect) {
+				totalCorrect += 1;
 			}
 		}
 	}
+	// for (let i = 0; i < correctAnswers.length; i += 1) {
+	// 	const correctAnswer = correctAnswers[i];
+	// 	const selectedAnswer = selectedAnswers.find((selectedAns) => selectedAns.quizzId === correctAnswer.quizzId);
+	// 	if (selectedAnswer) {
+	// 		const { correctOptions } = correctAnswer;
+	// 		const { selectedOptions } = selectedAnswer;
+	// 		if (correctOptions.length === selectedOptions.length) {
+	// 			let isCorrect = true;
+	// 			for (let j = 0; j < correctOptions.length; j += 1) {
+	// 				const correctOption = correctOptions[j];
+	// 				if (!selectedOptions.includes(correctOption)) {
+	// 					isCorrect = false;
+	// 					break;
+	// 				}
+	// 			}
+	// 			if (isCorrect) {
+	// 				totalCorrect += 1;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	return QuizzMark.create({
 		...quizzMarkBody,
 		video: video._id,
 		student: student._id,
-		totalQuizz: quizzes.length,
+		totalQuizzes: quizzes.length,
 		totalCorrect,
 		totalWrong: quizzes.length - totalCorrect,
 		totalMarks: quizzes.length * 5,

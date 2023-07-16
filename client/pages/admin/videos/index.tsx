@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Auth } from "../../../components";
 import { apiConfig } from "../../../configs";
-import { ModalType, Video } from "../../../interfaces";
+import { IVideo, ModalType } from "../../../interfaces";
 import {
     useAddVideoMutation,
     useDeleteVideoMutation,
@@ -67,7 +67,7 @@ const Videos: NextPage = () => {
         },
     ] = useDeleteVideoMutation();
 
-    const handleModal = (type: ModalType, data?: Video) => {
+    const handleModal = (type: ModalType, data?: IVideo) => {
         setModalType(type);
         setIsModalOpen(true);
 
@@ -75,7 +75,7 @@ const Videos: NextPage = () => {
             form.resetFields();
         }
 
-        if (type === "edit" || type === "show") {
+        if (type === "edit" || type === "view") {
             form.setFieldsValue(data);
         }
     };
@@ -84,7 +84,7 @@ const Videos: NextPage = () => {
         deleteVideo(id);
     };
 
-    const handleSubmit = (values: Video) => {
+    const handleSubmit = (values: IVideo) => {
         if (modalType === "add") {
             addVideo(values);
         } else if (modalType === "edit") {
@@ -100,6 +100,7 @@ const Videos: NextPage = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
+            width: "25%",
             render: (title: string) => (
                 <Typography.Paragraph
                     ellipsis={{
@@ -114,6 +115,7 @@ const Videos: NextPage = () => {
             title: "Description",
             dataIndex: "description",
             key: "description",
+            width: "25%",
             render: (description: string) => (
                 <Typography.Paragraph
                     ellipsis={{
@@ -168,13 +170,13 @@ const Videos: NextPage = () => {
             title: "Actions",
             dataIndex: "actions",
             key: "actions",
-            render: (_: any, record: Video) => (
+            render: (_: any, record: IVideo) => (
                 <Space>
                     <Button
                         type="primary"
                         ghost
                         icon={<EyeOutlined />}
-                        onClick={() => handleModal("show", record)}
+                        onClick={() => handleModal("view", record)}
                     />
 
                     <Button
@@ -320,7 +322,13 @@ const Videos: NextPage = () => {
                 }}
             />
             <Modal
+                width={"70%"}
                 style={{ top: 20 }}
+                bodyStyle={{
+                    maxHeight: "80vh",
+                    overflowY: "auto",
+                    paddingRight: "8px",
+                }}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 okText={
@@ -347,7 +355,7 @@ const Videos: NextPage = () => {
                         ? "Add Video"
                         : modalType === "edit"
                         ? "Edit Video"
-                        : null
+                        : "Video Info"
                 }
             >
                 <Typography.Text type="secondary">
@@ -355,8 +363,8 @@ const Videos: NextPage = () => {
                         "Use markdown syntax for title and description."}
                 </Typography.Text>
 
-                {modalType === "show" ? (
-                    <Descriptions title="Video Info" layout="vertical">
+                {modalType === "view" ? (
+                    <Descriptions layout="vertical">
                         <Descriptions.Item label="Title" span={24}>
                             <Typography.Text>
                                 <ReactMarkdown>
@@ -364,14 +372,7 @@ const Videos: NextPage = () => {
                                 </ReactMarkdown>
                             </Typography.Text>
                         </Descriptions.Item>
-                        <Descriptions.Item
-                            label="Description"
-                            span={24}
-                            contentStyle={{
-                                maxHeight: 100,
-                                overflow: "auto",
-                            }}
-                        >
+                        <Descriptions.Item label="Description" span={24}>
                             <Typography.Paragraph>
                                 <ReactMarkdown>
                                     {form.getFieldValue("description")}
@@ -416,7 +417,7 @@ const Videos: NextPage = () => {
                         >
                             <Input.TextArea
                                 placeholder="ex: Video description"
-                                rows={4}
+                                autoSize={{ minRows: 4 }}
                             />
                         </Form.Item>
                         <Form.Item

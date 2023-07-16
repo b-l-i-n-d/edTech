@@ -1,15 +1,15 @@
 import { generateQueryUrl } from "../../../helpers";
 import {
-    Assignment,
-    AssignmentParams,
-    Assignments,
-    AssignmentsQueryParams,
+    IAssignment,
+    IAssignmentParams,
+    IAssignments,
+    IAssignmentsQueryParams,
 } from "../../../interfaces";
 import { apiSlice } from "../../api/apiSlice";
 
 export const assignmentsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAssignments: builder.query<Assignments, AssignmentsQueryParams>({
+        getAssignments: builder.query<IAssignments, IAssignmentsQueryParams>({
             query: ({ title, video, sortBy, page, limit }) => ({
                 url: generateQueryUrl("assignments", {
                     title,
@@ -32,14 +32,14 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                       ]
                     : [{ type: "Assignments", id: "LIST" }],
         }),
-        getAssignment: builder.query<Assignments, string>({
+        getAssignment: builder.query<IAssignment, string>({
             query: (id) => ({
                 url: `assignments/${id}`,
                 method: "GET",
             }),
             providesTags: (result, error, id) => [{ type: "Assignments", id }],
         }),
-        addAssignment: builder.mutation<Assignments, AssignmentParams>({
+        addAssignment: builder.mutation<IAssignment, IAssignmentParams>({
             query: ({ title, video, dueDate, totalMarks, description }) => ({
                 url: "assignments",
                 method: "POST",
@@ -47,7 +47,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Assignments"],
         }),
-        editAssignment: builder.mutation<Assignment, Assignment>({
+        editAssignment: builder.mutation<IAssignment, IAssignment>({
             query: ({
                 id,
                 title,
@@ -64,7 +64,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 { type: "Assignments", id },
             ],
         }),
-        deleteAssignment: builder.mutation<Assignment, string>({
+        deleteAssignment: builder.mutation<IAssignment, string>({
             query: (id) => ({
                 url: `assignments/${id}`,
                 method: "DELETE",

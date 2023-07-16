@@ -34,10 +34,13 @@ const createAssignmentMark = async (assignmentMarkBody) => {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Student not found');
 	}
 
-	const assignmentMark = await queryAssignmentMarks({
-		assignment: assignmentMarkBody.assignment,
-		student: assignmentMarkBody.student,
-	});
+	const assignmentMark = await queryAssignmentMarks(
+		{
+			assignment: assignmentMarkBody.assignment,
+			student: assignmentMarkBody.student,
+		},
+		{}
+	);
 
 	if (assignmentMark.length > 0) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Assignment mark already exists');

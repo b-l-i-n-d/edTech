@@ -9,11 +9,7 @@ const router = express.Router();
 router
 	.route('/')
 	.post(auth(), validate(assignmentMarkValidation.createAssignmentMark), assignmentMarkController.createAssignmentMark)
-	.get(
-		auth('manageAssignmentsMarks'),
-		validate(assignmentMarkValidation.getAssignmentMarks),
-		assignmentMarkController.getAssignmentMarks
-	);
+	.get(auth(), validate(assignmentMarkValidation.getAssignmentMarks), assignmentMarkController.getAssignmentMarks);
 
 router
 	.route('/:assignmentMarkId')

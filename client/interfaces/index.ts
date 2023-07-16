@@ -1,7 +1,14 @@
 import { FormInstance } from "antd";
 import type { SelectProps } from "antd/es/select";
 
-export interface User {
+interface IResult {
+    results: any[];
+    totalResults: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+}
+export interface IUser {
     id: number;
     name: string;
     email: string;
@@ -9,7 +16,7 @@ export interface User {
     role: "user" | "admin";
 }
 
-export interface AuthState {
+export interface IAuthState {
     tokens: {
         acess: {
             token: string;
@@ -18,10 +25,10 @@ export interface AuthState {
             token: string;
         };
     } | null;
-    user: User | null;
+    user: IUser | null;
 }
 
-export interface VideosQueryParams {
+export interface IVideosQueryParams {
     title?: string;
     description?: string;
     sortBy?: string;
@@ -30,15 +37,11 @@ export interface VideosQueryParams {
     search?: string;
 }
 
-export interface Videos {
-    results: Video[];
-    totalResults: number;
-    limit: number;
-    page: number;
-    totalPages: number;
+export interface IVideos extends IResult {
+    results: IVideo[];
 }
 
-export interface Video {
+export interface IVideo {
     id: string;
     title: string;
     description: string;
@@ -47,7 +50,11 @@ export interface Video {
     duration: number;
 }
 
-export interface QuizzesQueryParams {
+export interface IVideoState {
+    currentVideoId: string | null;
+}
+
+export interface IQuizzesQueryParams {
     question?: string;
     video?: string;
     sortBy?: string;
@@ -55,35 +62,32 @@ export interface QuizzesQueryParams {
     limit?: number;
 }
 
-export interface Quizzes {
-    results: Quizz[];
-    totalResults: number;
-    limit: number;
-    page: number;
-    totalPages: number;
+export interface IQuizzes extends IResult {
+    results: IQuizz[];
 }
 
-export interface Quizz {
+export interface IQuizz {
     id: string;
     question: string;
     description?: string;
-    video: string | Video;
-    options: Options[];
+    video: string | IVideo;
+    options: IQuizzOptions[];
 }
 
-export interface QuizzParams {
+export interface IQuizzParams {
     question: string;
     description?: string;
     video: string;
-    options: Options[];
+    options: IQuizzOptions[];
 }
 
-export interface Options {
+export interface IQuizzOptions {
+    _id?: string;
     option: string;
     isCorrect: boolean;
 }
 
-export interface AssignmentsQueryParams {
+export interface IAssignmentsQueryParams {
     title?: string;
     video?: string;
     sortBy?: string;
@@ -91,24 +95,20 @@ export interface AssignmentsQueryParams {
     limit?: number;
 }
 
-export interface Assignments {
-    results: Assignment[];
-    totalResults: number;
-    limit: number;
-    page: number;
-    totalPages: number;
+export interface IAssignments extends IResult {
+    results: IAssignment[];
 }
 
-export interface Assignment {
+export interface IAssignment {
     id: string;
     title: string;
-    video: string | Video;
+    video: string | IVideo;
     description?: string;
     dueDate: string;
     totalMarks: number;
 }
 
-export interface AssignmentParams {
+export interface IAssignmentParams {
     title: string;
     video: string;
     description?: string;
@@ -116,7 +116,7 @@ export interface AssignmentParams {
     totalMarks: number;
 }
 
-export interface AssignmentsMarksQueryParams {
+export interface IAssignmentsMarksQueryParams {
     assignment?: string;
     student?: string;
     status?: string;
@@ -125,32 +125,61 @@ export interface AssignmentsMarksQueryParams {
     limit?: number;
 }
 
-export interface AssignmentsMarks {
-    results: AssignmentMark[];
-    totalResults: number;
-    limit: number;
-    page: number;
-    totalPages: number;
+export interface IAssignmentsMarks extends IResult {
+    results: IAssignmentMark[];
 }
 
-export interface AssignmentMark {
+export interface IAssignmentMark {
     id: string;
-    assignment: string | Assignment;
-    student: string | User;
+    assignment: string | IAssignment;
+    student: string | IUser;
     marks: number;
     status: "pending" | "published";
+    repoLink: string;
+    webpageLink: string;
     feedback?: string;
 }
 
-export interface AssignmentMarkParams {
+export interface IAssignmentMarkParams {
     assignment: string;
     student: string;
-    marks: number;
-    status: "pending" | "published";
+    repoLink: string;
+    webpageLink: number;
     feedback?: string;
 }
 
-export type ModalType = "add" | "edit" | "show";
+export interface IQuizzMarksQueryParams {
+    video?: string;
+    student?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+}
+
+export interface IQuizzMarks extends IResult {
+    results: IQuizzMark[];
+}
+
+export interface IQuizzMark {
+    id: string;
+    video: string | IVideo;
+    student: string | IUser;
+    totalQuizzes: number;
+    totalCorrect: number;
+    totalWrong: number;
+    totalMarks: number;
+    marks: number;
+    correctAnswers: object[];
+    selectedAnswers: object[];
+}
+
+export interface IQuizzMarkParams {
+    video: string;
+    student: string;
+    selectedAnswers: object[];
+}
+
+export type ModalType = "add" | "edit" | "view";
 
 export interface DebounceSelectProps<ValueType = any>
     extends Omit<SelectProps<ValueType | ValueType[]>, "options" | "children"> {

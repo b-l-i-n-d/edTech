@@ -5,12 +5,14 @@ const createQuizzMark = {
 	body: Joi.object().keys({
 		video: Joi.required().custom(customValidation.objectId),
 		student: Joi.required().custom(customValidation.objectId),
-		selectedAnswers: Joi.array().items(
-			Joi.object().keys({
-				quizzId: Joi.required().custom(customValidation.objectId),
-				selectedOptions: Joi.array().items(Joi.string().custom(customValidation.objectId)),
-			})
-		),
+		selectedAnswers: Joi.array()
+			.items(
+				Joi.object().pattern(
+					Joi.custom(customValidation.objectId),
+					Joi.array().items(Joi.custom(customValidation.objectId))
+				)
+			)
+			.required(),
 	}),
 };
 

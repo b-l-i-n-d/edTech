@@ -14,7 +14,7 @@ const getAssignments = catchAsync(async (req, res) => {
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
 	options.populate = 'video:title';
 
-	if (req.user.role !== 'admin' && !filter.videoId) {
+	if (req.user.role !== 'admin' && !filter.video) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Only admin can get all assignments');
 	}
 

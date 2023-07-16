@@ -26,7 +26,7 @@ export const apiSlice = createApi({
             getState().auth?.tokens?.refresh?.expires < Date.now();
         const result = await baseQuery(args, api, extraOptions);
 
-        if (result.error?.status === 401 && isTokenExpired) {
+        if (result.error?.status === 401 || isTokenExpired) {
             api.dispatch(authApi.endpoints.logout.initiate(refreshToken));
         }
         return result;
@@ -37,6 +37,13 @@ export const apiSlice = createApi({
             return action.payload[reducerPath];
         }
     },
-    tagTypes: ["Assignments", "AssignmentsMarks", "Auth", "Videos", "Quizzes"],
+    tagTypes: [
+        "Assignments",
+        "AssignmentsMarks",
+        "Auth",
+        "Videos",
+        "Quizzes",
+        "QuizzMarks",
+    ],
     endpoints: (builder) => ({}),
 });

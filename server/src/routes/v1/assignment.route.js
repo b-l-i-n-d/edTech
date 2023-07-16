@@ -9,7 +9,7 @@ const router = express.Router();
 router
 	.route('/')
 	.post(auth('manageAssignments'), validate(assignmentValidation.createAssignment), assignmentController.createAssignment)
-	.get(auth('manageAssignments'), validate(assignmentValidation.getAssignments), assignmentController.getAssignments);
+	.get(auth(), validate(assignmentValidation.getAssignments), assignmentController.getAssignments);
 
 router
 	.route('/:assignmentId')

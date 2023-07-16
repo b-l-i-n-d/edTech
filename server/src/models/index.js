@@ -7,3 +7,4 @@ import User from './user.model.js';
 import Video from './video.model.js';
 
 export { Assignment, AssignmentMark, Quizz, QuizzMark, Token, User, Video };
+

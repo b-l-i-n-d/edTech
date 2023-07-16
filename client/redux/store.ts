@@ -9,10 +9,12 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { apiSlice } from "./api/apiSlice";
 import authSliceReducer from "./features/auth/authSlice";
+import videosSliceReducer from "./features/videos/videosSlice";
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSliceReducer,
+    videos: videosSliceReducer,
 });
 
 const makeConfiguredStore = () =>
@@ -31,7 +33,7 @@ export const makeStore: MakeStore<any> = () => {
         // we need it only on client side
         const persistConfig = {
             key: "nextjs",
-            whitelist: ["auth"], // make sure it does not clash with server keys
+            whitelist: ["auth", "videos"], // make sure it does not clash with server keys
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);

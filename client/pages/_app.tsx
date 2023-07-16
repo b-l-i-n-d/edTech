@@ -10,7 +10,7 @@ import { wrapper } from "../redux/store";
 import "../styles/globals.css";
 import withTheme from "../theme";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 function App({ Component, ...rest }: AppProps) {
     const { store, props } = wrapper.useWrappedStore(rest);
@@ -23,7 +23,7 @@ function App({ Component, ...rest }: AppProps) {
         <Provider store={store}>
             <PersistGate persistor={store.__persistor} loading={null}>
                 {withTheme(
-                    <main className={inter.className}>
+                    <main className={inter.variable}>
                         <StyleProvider hashPriority="high">
                             <AppLayout>
                                 <Component {...props.pageProps} />

@@ -1,9 +1,9 @@
 import { AnyAction, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import storage from "redux-persist/lib/storage";
-import { AuthState } from "../../../interfaces";
+import { IAuthState } from "../../../interfaces";
 
-const initialState: AuthState = {
+const initialState: IAuthState = {
     tokens: null,
     user: null,
 };
@@ -20,6 +20,7 @@ const authSlice = createSlice({
         },
         userLoggOut: (state) => {
             storage.removeItem("persist:nextjs");
+
             return initialState;
         },
     },

@@ -22,7 +22,7 @@ const getQuizzes = catchAsync(async (req, res) => {
 
 	if (req.user.role !== 'admin') {
 		result.results = result.results.map((quizz) => {
-			const quizzObject = quizz.toObject();
+			const quizzObject = quizz.toJSON();
 			const transformedQuizz = quizzObject.options.map((option) => {
 				const { isCorrect, ...rest } = option;
 				return rest;

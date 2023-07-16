@@ -28,7 +28,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Auth, Common } from "../../../components";
 import { apiConfig } from "../../../configs";
-import { Assignment, AssignmentParams, ModalType } from "../../../interfaces";
+import { IAssignment, IAssignmentParams, ModalType } from "../../../interfaces";
 import {
     useAddAssignmentMutation,
     useDeleteAssignmentMutation,
@@ -76,7 +76,7 @@ const Assignments: NextPage = () => {
         },
     ] = useDeleteAssignmentMutation();
 
-    const handleModal = (type: ModalType, data?: Assignment) => {
+    const handleModal = (type: ModalType, data?: IAssignment) => {
         setModalType(type);
         setIsModalOpen(true);
 
@@ -84,7 +84,7 @@ const Assignments: NextPage = () => {
             form.resetFields();
         }
 
-        if (type === "edit" || type === "show") {
+        if (type === "edit" || type === "view") {
             form.setFieldsValue({
                 id: data?.id,
                 title: data?.title,
@@ -107,7 +107,7 @@ const Assignments: NextPage = () => {
         deleteAssignment(id);
     };
 
-    const handlSubmit = (values: AssignmentParams) => {
+    const handlSubmit = (values: IAssignmentParams) => {
         if (modalType === "add") {
             addAssignment(values);
         } else if (modalType === "edit") {
@@ -120,6 +120,7 @@ const Assignments: NextPage = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
+            width: "20%",
             render: (text: string) => (
                 <Typography.Paragraph
                     ellipsis={{
@@ -134,6 +135,7 @@ const Assignments: NextPage = () => {
             title: "Description",
             dataIndex: "description",
             key: "description",
+            width: "30%",
             render: (text: string) => (
                 <Typography.Paragraph ellipsis={{ rows: 2 }}>
                     {text}
@@ -144,7 +146,8 @@ const Assignments: NextPage = () => {
             title: "Video",
             dataIndex: "video",
             key: "video",
-            render: (text: string, record: Assignment) => (
+            width: "20%",
+            render: (text: string, record: IAssignment) => (
                 <Typography.Paragraph
                     ellipsis={{
                         rows: 2,
@@ -189,13 +192,13 @@ const Assignments: NextPage = () => {
             title: "Actions",
             dataIndex: "actions",
             key: "actions",
-            render: (text: string, record: Assignment) => (
+            render: (text: string, record: IAssignment) => (
                 <Space>
                     <Button
                         type="primary"
                         ghost
                         icon={<EyeOutlined />}
-                        onClick={() => handleModal("show", record)}
+                        onClick={() => handleModal("view", record)}
                     />
                     <Button
                         type="primary"
@@ -348,7 +351,13 @@ const Assignments: NextPage = () => {
                 }}
             />
             <Modal
+                width={"70%"}
                 style={{ top: 20 }}
+                bodyStyle={{
+                    maxHeight: "80vh",
+                    overflowY: "auto",
+                    paddingRight: "8px",
+                }}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 okText={
@@ -375,7 +384,7 @@ const Assignments: NextPage = () => {
                         ? "Add Assignment"
                         : modalType === "edit"
                         ? "Edit Assignment"
-                        : null
+                        : "Assignment Details"
                 }
             >
                 <Typography.Text type="secondary">
@@ -383,8 +392,8 @@ const Assignments: NextPage = () => {
                         "Use markdown syntax for title and description."}
                 </Typography.Text>
 
-                {modalType === "show" ? (
-                    <Descriptions title="Assignment Details" layout="vertical">
+                {modalType === "view" ? (
+                    <Descriptions layout="vertical">
                         <Descriptions.Item label="Title" span={24}>
                             <Typography.Text>
                                 <ReactMarkdown>
@@ -439,7 +448,7 @@ const Assignments: NextPage = () => {
                         >
                             <Input.TextArea
                                 placeholder="Please input description and use Markdown."
-                                rows={4}
+                                autoSize={{ minRows: 4 }}
                             />
                         </Form.Item>
                         <Form.Item

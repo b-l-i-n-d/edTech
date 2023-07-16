@@ -14,7 +14,7 @@ const getQuizzMarks = catchAsync(async (req, res) => {
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
 	options.populate = 'video:videoId title,student:name';
 
-	if (req.user.role !== 'admin' && !filter.studentId) {
+	if (req.user.role !== 'admin' && !filter.student) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Only admin can get all quizz marks');
 	}
 

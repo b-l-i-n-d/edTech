@@ -1,12 +1,17 @@
 import {
-    AssignmentsMarksQueryParams,
-    QuizzesQueryParams,
-    VideosQueryParams,
+    IAssignmentsMarksQueryParams,
+    IQuizzMarksQueryParams,
+    IQuizzesQueryParams,
+    IVideosQueryParams,
 } from "../interfaces";
 
 export default function generateQueryUrl(
     url: string,
-    params: VideosQueryParams | QuizzesQueryParams | AssignmentsMarksQueryParams
+    params:
+        | IVideosQueryParams
+        | IQuizzesQueryParams
+        | IAssignmentsMarksQueryParams
+        | IQuizzMarksQueryParams
 ) {
     let query = url + "?";
     for (const [key, value] of Object.entries(params)) {

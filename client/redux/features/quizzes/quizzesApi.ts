@@ -1,15 +1,15 @@
 import { generateQueryUrl } from "../../../helpers";
 import {
-    Quizz,
-    QuizzParams,
-    Quizzes,
-    QuizzesQueryParams,
+    IQuizz,
+    IQuizzes,
+    IQuizzesQueryParams,
+    IQuizzParams,
 } from "../../../interfaces";
 import { apiSlice } from "../../api/apiSlice";
 
 export const quizzesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getQuizzes: builder.query<Quizzes, QuizzesQueryParams>({
+        getQuizzes: builder.query<IQuizzes, IQuizzesQueryParams>({
             query: ({ question, video, sortBy, page, limit }) => ({
                 url: generateQueryUrl("quizzes", {
                     question,
@@ -32,14 +32,14 @@ export const quizzesApi = apiSlice.injectEndpoints({
                       ]
                     : [{ type: "Quizzes", id: "LIST" }],
         }),
-        getQuizz: builder.query<Quizzes, string>({
+        getQuizz: builder.query<IQuizz, string>({
             query: (id) => ({
                 url: `quizzes/${id}`,
                 method: "GET",
             }),
             providesTags: (result, error, id) => [{ type: "Quizzes", id }],
         }),
-        addQuizz: builder.mutation<Quizzes, QuizzParams>({
+        addQuizz: builder.mutation<IQuizz, IQuizzParams>({
             query: ({ question, description, video, options }) => ({
                 url: "quizzes",
                 method: "POST",
@@ -47,7 +47,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Quizzes"],
         }),
-        editQuizz: builder.mutation<Quizz, Quizz>({
+        editQuizz: builder.mutation<IQuizz, IQuizz>({
             query: ({ id, question, description, video, options }) => ({
                 url: `quizzes/${id}`,
                 method: "PATCH",
@@ -57,7 +57,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 { type: "Quizzes", id },
             ],
         }),
-        deleteQuizz: builder.mutation<Quizz, string>({
+        deleteQuizz: builder.mutation<IQuizz, string>({
             query: (id) => ({
                 url: `quizzes/${id}`,
                 method: "DELETE",

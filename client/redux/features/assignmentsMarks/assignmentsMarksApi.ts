@@ -1,17 +1,17 @@
 import { generateQueryUrl } from "../../../helpers";
 import {
-    AssignmentMark,
-    AssignmentMarkParams,
-    AssignmentsMarks,
-    AssignmentsMarksQueryParams,
+    IAssignmentMark,
+    IAssignmentMarkParams,
+    IAssignmentsMarks,
+    IAssignmentsMarksQueryParams,
 } from "../../../interfaces";
 import { apiSlice } from "../../api/apiSlice";
 
 export const assignmentsMarksApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAssignmentsMarks: builder.query<
-            AssignmentsMarks,
-            AssignmentsMarksQueryParams
+            IAssignmentsMarks,
+            IAssignmentsMarksQueryParams
         >({
             query: ({ assignment, student, status, sortBy, page, limit }) => ({
                 url: generateQueryUrl("assignments-marks", {
@@ -36,7 +36,7 @@ export const assignmentsMarksApi = apiSlice.injectEndpoints({
                       ]
                     : [{ type: "AssignmentsMarks", id: "LIST" }],
         }),
-        getAssignmentMark: builder.query<AssignmentsMarks, string>({
+        getAssignmentMark: builder.query<IAssignmentsMarks, string>({
             query: (id) => ({
                 url: `assignments-marks/${id}`,
                 method: "GET",
@@ -46,17 +46,23 @@ export const assignmentsMarksApi = apiSlice.injectEndpoints({
             ],
         }),
         addAssignmentMark: builder.mutation<
-            AssignmentsMarks,
-            AssignmentMarkParams
+            IAssignmentsMarks,
+            IAssignmentMarkParams
         >({
-            query: ({ assignment, student, marks, status, feedback }) => ({
+            query: ({
+                assignment,
+                student,
+                repoLink,
+                webpageLink,
+                feedback,
+            }) => ({
                 url: "assignments-marks",
                 method: "POST",
-                body: { assignment, student, marks, status, feedback },
+                body: { assignment, student, repoLink, webpageLink, feedback },
             }),
             invalidatesTags: ["AssignmentsMarks"],
         }),
-        editAssignmentMark: builder.mutation<AssignmentMark, AssignmentMark>({
+        editAssignmentMark: builder.mutation<IAssignmentMark, IAssignmentMark>({
             query: ({ id, assignment, student, marks, status, feedback }) => ({
                 url: `assignments-marks/${id}`,
                 method: "PATCH",
@@ -66,7 +72,7 @@ export const assignmentsMarksApi = apiSlice.injectEndpoints({
                 { type: "AssignmentsMarks", id },
             ],
         }),
-        deleteAssignmentMark: builder.mutation<AssignmentMark, string>({
+        deleteAssignmentMark: builder.mutation<IAssignmentMark, string>({
             query: (id) => ({
                 url: `assignments-marks/${id}`,
                 method: "DELETE",

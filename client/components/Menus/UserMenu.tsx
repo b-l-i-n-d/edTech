@@ -1,28 +1,34 @@
-import { Button, Menu, Typography, notification } from "antd";
+import { Button, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import {
     selectRefreshToken,
     selectUser,
 } from "../../redux/features/auth/authSelector";
-import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentVideoId } from "../../redux/features/videos/videoSelctor";
+import { videoSelected } from "../../redux/features/videos/videosSlice";
 
 const UserMenu: React.FC = () => {
     const router = useRouter();
-    const pathname = router.pathname;
+    const pathname = router.pathname.split("/")[1];
+
+    const dispatch = useAppDispatch();
     const user = useAppSelector(selectUser);
+    const currentVideoId = useAppSelector(selectCurrentVideoId);
     const refreshToken = useAppSelector(selectRefreshToken);
     const [logout, { isLoading: isLogoutLoading }] = useLogoutMutation();
 
     const handleLogout = () => {
         logout(refreshToken);
+        dispatch(videoSelected(null));
     };
 
     const items = [
         {
-            key: "/",
+            key: "",
             label: (
                 <Link href="/">
                     <Button type="text">
@@ -32,11 +38,13 @@ const UserMenu: React.FC = () => {
             ),
         },
         {
-            key: "/course",
+            key: "course",
             label: (
-                <Button type="text">
-                    <Typography.Text strong>Course Access</Typography.Text>
-                </Button>
+                <Link href={`/course/${currentVideoId}`}>
+                    <Button type="text">
+                        <Typography.Text strong>Course Access</Typography.Text>
+                    </Button>
+                </Link>
             ),
         },
         {

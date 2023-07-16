@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../hooks";
 import Common from "../common";
 
 interface Props {

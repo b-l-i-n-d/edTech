@@ -1,6 +1,9 @@
 import { generateQueryUrl } from "../../../helpers";
-import { Video, Videos, VideosQueryParams } from "../../../interfaces";
+import { IVideo, IVideos, IVideosQueryParams } from "../../../interfaces";
 import { apiSlice } from "../../api/apiSlice";
+import { AppState } from "../../store";
+import { selectCurrentVideoId } from "./videoSelctor";
+import { videoSelected } from "./videosSlice";
 
 interface VideoParams {
     title: string;
@@ -12,7 +15,7 @@ interface VideoParams {
 
 export const videosApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getVideos: builder.query<Videos, VideosQueryParams>({
+        getVideos: builder.query<IVideos, IVideosQueryParams>({
             query: ({ title, description, sortBy, page, limit, search }) => ({
                 url: generateQueryUrl("videos", {
                     title,
@@ -35,15 +38,31 @@ export const videosApi = apiSlice.injectEndpoints({
                           { type: "Videos", id: "LIST" },
                       ]
                     : [{ type: "Videos", id: "LIST" }],
+            async onQueryStarted(arg, { getState, dispatch, queryFulfilled }) {
+                try {
+                    const state: AppState = getState();
+                    const currentVideoId = selectCurrentVideoId(state);
+                    const { data: videosData } = await queryFulfilled;
+                    const { results: videos } = videosData;
+
+                    if (currentVideoId) {
+                        dispatch(videoSelected(currentVideoId));
+                    } else if (videos.length > 0) {
+                        dispatch(videoSelected(videos[0].id));
+                    }
+                } catch (error) {
+                    // TODO: Handle error
+                }
+            },
         }),
-        getVideo: builder.query<Video, string>({
+        getVideo: builder.query<IVideo, string>({
             query: (id) => ({
                 url: `videos/${id}`,
                 method: "GET",
             }),
             providesTags: (result, error, id) => [{ type: "Videos", id }],
         }),
-        addVideo: builder.mutation<Video, VideoParams>({
+        addVideo: builder.mutation<IVideo, VideoParams>({
             query: ({ title, description, url, thumbnail, duration }) => ({
                 url: "videos",
                 method: "POST",
@@ -51,7 +70,7 @@ export const videosApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Videos"],
         }),
-        editVideo: builder.mutation<Video, Video>({
+        editVideo: builder.mutation<IVideo, IVideo>({
             query: ({ id, title, description, url, thumbnail, duration }) => ({
                 url: `videos/${id}`,
                 method: "PATCH",
@@ -61,7 +80,7 @@ export const videosApi = apiSlice.injectEndpoints({
                 { type: "Videos", id },
             ],
         }),
-        deleteVideo: builder.mutation<Video, string>({
+        deleteVideo: builder.mutation<IVideo, string>({
             query: (id: string) => ({
                 url: `videos/${id}`,
                 method: "DELETE",

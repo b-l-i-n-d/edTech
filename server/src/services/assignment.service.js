@@ -52,7 +52,7 @@ const updateAssignmentById = async (assignmentId, updateBody) => {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Assignment not found');
 	}
 
-	const video = await videoService.getVideoById(updateBody.videoId);
+	const video = await videoService.getVideoById(updateBody.video);
 	if (!video) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
 	}
