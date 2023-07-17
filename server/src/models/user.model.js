@@ -44,6 +44,12 @@ const userSchema = Schema(
 			type: Boolean,
 			default: false,
 		},
+		watchedVideos: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Video',
+			},
+		],
 	},
 	{
 		timestamps: true,

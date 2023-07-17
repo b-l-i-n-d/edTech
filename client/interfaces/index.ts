@@ -14,6 +14,19 @@ export interface IUser {
     email: string;
     isEmailVerified: boolean;
     role: "user" | "admin";
+    watchedVideos: string[] | IVideo[];
+}
+
+export interface IUsers extends IResult {
+    results: IUser[];
+}
+
+export interface IUsersQueryParams {
+    name?: string;
+    role?: string;
+    sortBy?: string;
+    page?: number;
+    limit?: number;
 }
 
 export interface IAuthState {

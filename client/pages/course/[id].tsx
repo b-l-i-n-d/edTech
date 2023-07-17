@@ -53,6 +53,7 @@ import {
     useGetQuizzMarksQuery,
 } from "../../redux/features/quizzMarks/quizzMarksApi";
 import { useGetQuizzesQuery } from "../../redux/features/quizzes/quizzesApi";
+import { useUpdateUserMutation } from "../../redux/features/users/usersApi";
 import {
     useGetVideoQuery,
     useLazyGetVideosQuery,
@@ -164,6 +165,14 @@ const CoursePlayer: NextPage = () => {
             skip: !videoId,
         }
     );
+    const [
+        upadteUser,
+        {
+            data: updatedUser,
+            isLoading: isUpdateUserLoading,
+            error: updateUserError,
+        },
+    ] = useUpdateUserMutation();
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const { target }: any = e;
@@ -636,6 +645,17 @@ const CoursePlayer: NextPage = () => {
                                         <Skeleton.Image />
                                     )
                                 }
+                                onEnded={() => {
+                                    if (isNextVideoId()) {
+                                        router.push(
+                                            `/course/${isNextVideoId()}`
+                                        );
+                                    }
+                                    upadteUser({
+                                        id: user.id,
+                                        watchedVideos: [videoId as string],
+                                    });
+                                }}
                             />
                         </div>
                     </Spin>
@@ -645,7 +665,7 @@ const CoursePlayer: NextPage = () => {
                             <span
                                 className="flex items-center"
                                 onClick={
-                                    isPrevVideoId()
+                                    !isPrevVideoId()
                                         ? () => {}
                                         : () =>
                                               router.push(
@@ -699,8 +719,13 @@ const CoursePlayer: NextPage = () => {
                         className="border-2 rounded-lg"
                         header={
                             <Typography.Title level={5} className="px-4 pt-4">
-                                Total Videos: {videos?.totalResults} - Progress
-                                :{" "}
+                                {`Progress: ${
+                                    (user.watchedVideos.length /
+                                        (videos?.totalResults ?? 0)) *
+                                    100
+                                }% (${user.watchedVideos.length}/${
+                                    videos?.totalResults ?? 0
+                                })`}
                             </Typography.Title>
                         }
                         size="small"
@@ -750,12 +775,16 @@ const CoursePlayer: NextPage = () => {
                                             .substring(11, 19)} miniutes`}
                                     />
                                     <div>
-                                        <CheckCircleFilled
-                                            className="text-green-500"
-                                            style={{
-                                                fontSize: "16px",
-                                            }}
-                                        />
+                                        {user.watchedVideos.includes(
+                                            item.id
+                                        ) && (
+                                            <CheckCircleFilled
+                                                className="text-green-500"
+                                                style={{
+                                                    fontSize: "16px",
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 </List.Item>
                             )}

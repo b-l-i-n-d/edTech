@@ -2,12 +2,14 @@ import {
     IAssignmentsMarksQueryParams,
     IQuizzMarksQueryParams,
     IQuizzesQueryParams,
+    IUsersQueryParams,
     IVideosQueryParams,
 } from "../interfaces";
 
 export default function generateQueryUrl(
     url: string,
     params:
+        | IUsersQueryParams
         | IVideosQueryParams
         | IQuizzesQueryParams
         | IAssignmentsMarksQueryParams

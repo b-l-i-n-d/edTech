@@ -35,6 +35,7 @@ const updateUser = {
 			email: Joi.string().email(),
 			password: Joi.string().custom(customValidation.password),
 			name: Joi.string(),
+			watchedVideos: Joi.array().items(Joi.string().custom(customValidation.objectId)),
 		})
 		.min(1),
 };
