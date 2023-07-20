@@ -1,11 +1,22 @@
 import httpStatus from 'http-status';
-import { quizzService } from '../services/index.js';
+import { quizzService, quizzSetService } from '../services/index.js';
 import ApiError from '../utils/ApiError.js';
 import catchAsync from '../utils/catchAsync.js';
 import pick from '../utils/pick.js';
 
 const createQuizz = catchAsync(async (req, res) => {
 	const quizz = await quizzService.createQuizz(req.body);
+	const quizzSet = await quizzSetService.queryQuizzSets({ video: quizz.video }, {});
+
+	if (quizzSet.totalResults === 0) {
+		await quizzSetService.createQuizzSet({ video: quizz.video, quizzes: [quizz.id] });
+	} else {
+		await quizzSetService.updateQuizzSetById(quizzSet.results[0].id, {
+			video: quizzSet.results[0].video,
+			quizzes: [...quizzSet.results[0].quizzes, quizz.id],
+		});
+	}
+
 	res.status(httpStatus.CREATED).send(quizz);
 });
 
@@ -49,7 +60,19 @@ const updateQuizz = catchAsync(async (req, res) => {
 });
 
 const deleteQuizz = catchAsync(async (req, res) => {
-	await quizzService.deleteQuizzById(req.params.quizzId);
+	const deletedQuizz = await quizzService.deleteQuizzById(req.params.quizzId);
+	const quizzSet = await quizzSetService.queryQuizzSets({ video: deletedQuizz.video }, {});
+	const quizzes = quizzSet.results[0].quizzes.filter((quizz) => quizz.toString() !== deletedQuizz.id);
+
+	if (quizzes.length === 0) {
+		await quizzSetService.deleteQuizzSetById(quizzSet.results[0].id);
+	} else {
+		await quizzSetService.updateQuizzSetById(quizzSet.results[0].id, {
+			video: quizzSet.results[0].video,
+			quizzes,
+		});
+	}
+
 	res.status(httpStatus.NO_CONTENT).send();
 });
 

@@ -3,6 +3,7 @@ import assignmentMarkValidation from './assignmentMark.validation.js';
 import authValidation from './auth.validation.js';
 import quizzValidation from './quizz.validation.js';
 import quizzMarkValidation from './quizzMark.validation.js';
+import quizzSetValidation from './quizzSet.validation.js';
 import userValidation from './user.validation.js';
 import videoValidation from './video.validation.js';
 
@@ -11,6 +12,7 @@ export {
 	assignmentValidation,
 	authValidation,
 	quizzMarkValidation,
+	quizzSetValidation,
 	quizzValidation,
 	userValidation,
 	videoValidation,

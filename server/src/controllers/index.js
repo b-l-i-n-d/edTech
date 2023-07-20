@@ -3,6 +3,7 @@ import assignmentMarkController from './assignmentMark.controller.js';
 import authController from './auth.controller.js';
 import quizzController from './quizz.controller.js';
 import quizzMarkController from './quizzMark.controller.js';
+import quizzSetController from './quizzSet.controller.js';
 import userController from './user.controller.js';
 import videoController from './video.controller.js';
 
@@ -12,6 +13,7 @@ export {
 	authController,
 	quizzController,
 	quizzMarkController,
+	quizzSetController,
 	userController,
 	videoController,
 };

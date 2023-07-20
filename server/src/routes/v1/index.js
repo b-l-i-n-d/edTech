@@ -6,6 +6,7 @@ import authRoute from './auth.route.js';
 import docsRoute from './docs.route.js';
 import quizzRoute from './quizz.route.js';
 import quizzMarkRoute from './quizzMark.route.js';
+import quizzSetRoute from './quizzSet.route.js';
 import userRoute from './user.route.js';
 import videoRoute from './video.route.js';
 
@@ -31,6 +32,10 @@ const defaultRoutes = [
 	{
 		path: '/quizzes-marks',
 		route: quizzMarkRoute,
+	},
+	{
+		path: '/quizzes-sets',
+		route: quizzSetRoute,
 	},
 	{
 		path: '/assignments',

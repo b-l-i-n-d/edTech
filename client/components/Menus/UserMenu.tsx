@@ -48,6 +48,16 @@ const UserMenu: React.FC = () => {
             ),
         },
         {
+            key: "dashboard",
+            label: (
+                <Link href="/dashboard">
+                    <Button type="text">
+                        <Typography.Text strong>Dashboard</Typography.Text>
+                    </Button>
+                </Link>
+            ),
+        },
+        {
             key: "user",
             label: <Typography.Text strong>{user?.name}</Typography.Text>,
             children: [

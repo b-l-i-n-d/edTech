@@ -18,7 +18,7 @@ const createQuizz = async (quizzBody) => {
 };
 
 /**
- * Query for quizzs
+ * Query for quizzes
  * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
  * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
@@ -27,9 +27,9 @@ const createQuizz = async (quizzBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryQuizzs = async (filter, options) => {
-	const quizzs = await Quizz.paginate(filter, options);
+	const quizzes = await Quizz.paginate(filter, options);
 
-	return quizzs;
+	return quizzes;
 };
 
 /**
