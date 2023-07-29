@@ -390,6 +390,26 @@ const CoursePlayer: NextPage = () => {
                     )}
                 </div>
 
+                {assignmentsMarks.totalResults > 0 &&
+                    assignmentsMarks.results[0].status === "published" && (
+                        <Card
+                            style={{
+                                marginBottom: "1rem",
+                            }}
+                            title="Course Instructor's Feedback"
+                            bordered={false}
+                        >
+                            <Typography.Paragraph>
+                                <ReactMarkdown>
+                                    {
+                                        assignmentsMarks.results[0]
+                                            .feedback as string
+                                    }
+                                </ReactMarkdown>
+                            </Typography.Paragraph>
+                        </Card>
+                    )}
+
                 <div>
                     <p className="font-bold text-base mb-4 text-blue-500">
                         Assignment Detailed Description
@@ -1107,11 +1127,14 @@ const CoursePlayer: NextPage = () => {
                                                 <Progress
                                                     type="circle"
                                                     percent={
-                                                        (quizzMark.results[0]
-                                                            .marks /
-                                                            quizzMark.results[0]
-                                                                .totalMarks) *
-                                                        100
+                                                        (
+                                                            (quizzMark
+                                                                .results[0]
+                                                                .marks /
+                                                                quizzMark
+                                                                    .results[0]
+                                                                    .totalMarks) as any
+                                                        ).toFixed(3) * 100
                                                     }
                                                 />
                                             </div>

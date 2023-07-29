@@ -35,6 +35,8 @@ const assignmentSchema = Schema(
 	}
 );
 
+assignmentSchema.index({ video: 1, title: 1 }, { unique: true });
+
 // Add plugin that converts mongoose to JSON
 assignmentSchema.plugin(toJSON);
 assignmentSchema.plugin(paginate);

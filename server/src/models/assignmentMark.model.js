@@ -43,6 +43,8 @@ const assignmentMarkSchema = Schema(
 	}
 );
 
+assignmentMarkSchema.index({ assignment: 1, student: 1, status: 1 }, { unique: true });
+
 // Add plugin that converts mongoose to JSON
 assignmentMarkSchema.plugin(toJSON);
 assignmentMarkSchema.plugin(paginate);

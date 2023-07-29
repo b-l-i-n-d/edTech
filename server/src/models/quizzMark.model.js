@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { paginate, toJSON } from './plugins/index.js';
 
-const quizzMarlSchema = Schema(
+const quizzMarkSchema = Schema(
 	{
 		video: {
 			type: Schema.Types.ObjectId,
@@ -66,15 +66,14 @@ const quizzMarlSchema = Schema(
 	}
 );
 
-// Add index on video and student fields
-quizzMarlSchema.index({ video: 1, student: 1 });
+quizzMarkSchema.index({ video: 1, student: 1 }, { unique: true });
 
 // Add plugin that converts mongoose to JSON
-quizzMarlSchema.plugin(toJSON);
-quizzMarlSchema.plugin(paginate);
+quizzMarkSchema.plugin(toJSON);
+quizzMarkSchema.plugin(paginate);
 
 /**
  * @typedef QuizzMark
  */
-const QuizzMark = model('QuizzMark', quizzMarlSchema);
+const QuizzMark = model('QuizzMark', quizzMarkSchema);
 export default QuizzMark;

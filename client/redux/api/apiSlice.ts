@@ -41,10 +41,12 @@ export const apiSlice = createApi({
         "Assignments",
         "AssignmentsMarks",
         "Auth",
+        "Dashboard",
         "Users",
         "Videos",
         "Quizzes",
         "QuizzMarks",
+        "QuizzSets",
     ],
     endpoints: (builder) => ({}),
 });

@@ -1,6 +1,7 @@
 import assignmentValidation from './assignment.validation.js';
 import assignmentMarkValidation from './assignmentMark.validation.js';
 import authValidation from './auth.validation.js';
+import dashboardValidation from './dashboard.validation.js';
 import quizzValidation from './quizz.validation.js';
 import quizzMarkValidation from './quizzMark.validation.js';
 import quizzSetValidation from './quizzSet.validation.js';
@@ -11,6 +12,7 @@ export {
 	assignmentMarkValidation,
 	assignmentValidation,
 	authValidation,
+	dashboardValidation,
 	quizzMarkValidation,
 	quizzSetValidation,
 	quizzValidation,

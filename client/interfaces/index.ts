@@ -8,6 +8,13 @@ interface IResult {
     page: number;
     totalPages: number;
 }
+
+export interface IResultQueryParams {
+    sortBy?: string;
+    page?: number;
+    limit?: number;
+}
+
 export interface IUser {
     id: number;
     name: string;
@@ -21,12 +28,9 @@ export interface IUsers extends IResult {
     results: IUser[];
 }
 
-export interface IUsersQueryParams {
+export interface IUsersQueryParams extends IResultQueryParams {
     name?: string;
     role?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
 }
 
 export interface IAuthState {
@@ -41,12 +45,9 @@ export interface IAuthState {
     user: IUser | null;
 }
 
-export interface IVideosQueryParams {
+export interface IVideosQueryParams extends IResultQueryParams {
     title?: string;
     description?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
     search?: string;
 }
 
@@ -67,12 +68,9 @@ export interface IVideoState {
     currentVideoId: string | null;
 }
 
-export interface IQuizzesQueryParams {
+export interface IQuizzesQueryParams extends IResultQueryParams {
     question?: string;
     video?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
 }
 
 export interface IQuizzes extends IResult {
@@ -100,12 +98,23 @@ export interface IQuizzOptions {
     isCorrect: boolean;
 }
 
-export interface IAssignmentsQueryParams {
+export interface IQuizzSetsQueryParams extends IResultQueryParams {
+    video?: string;
+}
+
+export interface IQuizzSets extends IResult {
+    results: IQuizzSet[];
+}
+
+export interface IQuizzSet {
+    id: string;
+    video: string | IVideo;
+    quizzes: string[] | IQuizz[];
+}
+
+export interface IAssignmentsQueryParams extends IResultQueryParams {
     title?: string;
     video?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
 }
 
 export interface IAssignments extends IResult {
@@ -129,13 +138,10 @@ export interface IAssignmentParams {
     totalMarks: number;
 }
 
-export interface IAssignmentsMarksQueryParams {
+export interface IAssignmentsMarksQueryParams extends IResultQueryParams {
     assignment?: string;
     student?: string;
     status?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
 }
 
 export interface IAssignmentsMarks extends IResult {
@@ -161,12 +167,9 @@ export interface IAssignmentMarkParams {
     feedback?: string;
 }
 
-export interface IQuizzMarksQueryParams {
+export interface IQuizzMarksQueryParams extends IResultQueryParams {
     video?: string;
     student?: string;
-    sortBy?: string;
-    page?: number;
-    limit?: number;
 }
 
 export interface IQuizzMarks extends IResult {
@@ -190,6 +193,50 @@ export interface IQuizzMarkParams {
     video: string;
     student: string;
     selectedAnswers: object[];
+}
+
+export interface IDashboardData {
+    totalQuizzSets: number;
+    totalVideos: number;
+    totalAssignments: number;
+    quizzReport: {
+        totalQuizzTaken: number;
+        totalQuizzes: number;
+        totalCorrect: number;
+        totalMarksObtained: number;
+        totalMarks: number;
+    };
+    quizzWithMarks: {
+        id: string;
+        video: {
+            id: string;
+            title: string;
+        };
+        quizzMark?: {
+            totalQuizzes: number;
+            totalCorrect: number;
+            totalMarks: number;
+            marks: number;
+        };
+    }[];
+    assignmentReport: {
+        totalAssignmentTaken: number;
+        totalMarksObtained: number;
+        totalMarks: number;
+        assignmentSubmittedOnTime: number;
+    };
+    assignmentWithMarks: {
+        id: string;
+        title: string;
+        dueDate: string;
+        totalMarks: number;
+        video: string;
+        assignmentMark?: {
+            status: "pending" | "published";
+            marks: number;
+            submittedAt: string;
+        };
+    }[];
 }
 
 export type ModalType = "add" | "edit" | "view";

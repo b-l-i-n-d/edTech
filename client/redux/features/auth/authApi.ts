@@ -1,4 +1,5 @@
 import { apiSlice } from "../../api/apiSlice";
+import { videoSelected } from "../videos/videosSlice";
 import { userLoggOut, userLoggedIn } from "./authSlice";
 
 interface LoginParams {
@@ -56,6 +57,7 @@ export const authApi = apiSlice.injectEndpoints({
                 try {
                     await queryFulfilled;
                     await dispatch(userLoggOut());
+                    await dispatch(videoSelected(null));
                 } catch (err) {
                     // Handle error
                 }

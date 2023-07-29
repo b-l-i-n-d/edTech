@@ -45,6 +45,8 @@ const quizzSchema = Schema(
 	}
 );
 
+quizzSchema.index({ video: 1, question: 1 }, { unique: true });
+
 // Add plugin that converts mongoose to JSON
 quizzSchema.plugin(toJSON);
 quizzSchema.plugin(paginate);

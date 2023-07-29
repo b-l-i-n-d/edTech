@@ -1,4 +1,4 @@
-import { Button, Menu, Typography } from "antd";
+import { Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -25,9 +25,7 @@ const AdminMenu: React.FC = () => {
             key: "/admin",
             label: (
                 <Link href="/admin">
-                    <Button type="text">
-                        <Typography.Text strong>Dashboard</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Dashboard</Typography.Text>
                 </Link>
             ),
         },
@@ -35,9 +33,7 @@ const AdminMenu: React.FC = () => {
             key: "/admin/videos",
             label: (
                 <Link href="/admin/videos">
-                    <Button type="text">
-                        <Typography.Text strong>Videos</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Videos</Typography.Text>
                 </Link>
             ),
         },
@@ -45,9 +41,7 @@ const AdminMenu: React.FC = () => {
             key: "/admin/quizzes",
             label: (
                 <Link href="/admin/quizzes">
-                    <Button type="text">
-                        <Typography.Text strong>Quizzes</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Quizzes</Typography.Text>
                 </Link>
             ),
         },
@@ -55,9 +49,7 @@ const AdminMenu: React.FC = () => {
             key: "/admin/assignments",
             label: (
                 <Link href="/admin/assignments">
-                    <Button type="text">
-                        <Typography.Text strong>Assignments</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Assignments</Typography.Text>
                 </Link>
             ),
         },
@@ -65,11 +57,7 @@ const AdminMenu: React.FC = () => {
             key: "/admin/assignments-marks",
             label: (
                 <Link href="/admin/assignments-marks">
-                    <Button type="text">
-                        <Typography.Text strong>
-                            Assignments Mark
-                        </Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Assignments Mark</Typography.Text>
                 </Link>
             ),
         },

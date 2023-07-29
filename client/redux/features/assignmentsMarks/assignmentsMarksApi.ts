@@ -60,7 +60,7 @@ export const assignmentsMarksApi = apiSlice.injectEndpoints({
                 method: "POST",
                 body: { assignment, student, repoLink, webpageLink, feedback },
             }),
-            invalidatesTags: ["AssignmentsMarks"],
+            invalidatesTags: ["AssignmentsMarks", "Dashboard"],
         }),
         editAssignmentMark: builder.mutation<IAssignmentMark, IAssignmentMark>({
             query: ({ id, assignment, student, marks, status, feedback }) => ({

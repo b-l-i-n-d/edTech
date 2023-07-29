@@ -3,6 +3,7 @@ import config from '../../config/config.js';
 import assignmentRoute from './assignment.route.js';
 import assignmentMarkRoute from './assignmentMark.route.js';
 import authRoute from './auth.route.js';
+import dashboardRoute from './dashboard.route.js';
 import docsRoute from './docs.route.js';
 import quizzRoute from './quizz.route.js';
 import quizzMarkRoute from './quizzMark.route.js';
@@ -16,6 +17,10 @@ const defaultRoutes = [
 	{
 		path: '/auth',
 		route: authRoute,
+	},
+	{
+		path: '/dashboard',
+		route: dashboardRoute,
 	},
 	{
 		path: '/users',

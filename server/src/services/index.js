@@ -1,6 +1,7 @@
 import assignmentService from './assignment.service.js';
 import assignmentMarkService from './assignmentMark.service.js';
 import authService from './auth.service.js';
+import dashboardService from './dashboard.service.js';
 import emailService from './email.service.js';
 import quizzService from './quizz.service.js';
 import quizzMarkService from './quizzMark.service.js';
@@ -13,6 +14,7 @@ export {
 	assignmentMarkService,
 	assignmentService,
 	authService,
+	dashboardService,
 	emailService,
 	quizzMarkService,
 	quizzService,

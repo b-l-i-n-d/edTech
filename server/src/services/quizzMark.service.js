@@ -48,56 +48,32 @@ const createQuizzMark = async (quizzMarkBody) => {
 
 	const quizzes = await Quizz.find({ video: quizzMarkBody.video });
 	if (quizzes.length === 0) {
-		throw new ApiError(httpStatus.NOT_FOUND, 'Quizz not found');
+		throw new ApiError(httpStatus.NOT_FOUND, 'Quizzes not found');
 	}
 
 	const correctAnswers = quizzes.map((quizz) => {
 		return {
-			[quizz._id]: quizz.options.filter((option) => option.isCorrect).map((option) => option._id),
+			[quizz._id]: quizz.options.filter((option) => option.isCorrect).map((option) => option._id.toString()),
 		};
 	});
 
-	// compare correctAnswers with quizzMarkBody.selectedAnswers
 	const { selectedAnswers } = quizzMarkBody;
-	let totalCorrect = 0;
-	for (let i = 0; i < selectedAnswers.length; i += 1) {
-		const quizz = quizzes[i];
-		const selectedAnswer = selectedAnswers[i];
-		const correctAnswer = correctAnswers[i][quizz._id];
-		if (selectedAnswer.length === correctAnswer.length) {
-			let isCorrect = true;
-			for (let j = 0; j < selectedAnswer.length; j += 1) {
-				if (!correctAnswer.includes(selectedAnswer[j])) {
-					isCorrect = false;
-					break;
-				}
-			}
-			if (isCorrect) {
+
+	const countTotalCorrect = (correctAns, selectedAns) => {
+		let totalCorrect = 0;
+
+		correctAns.forEach((correctObject, index) => {
+			const selectedObject = selectedAns[index];
+
+			if (JSON.stringify(correctObject) === JSON.stringify(selectedObject)) {
 				totalCorrect += 1;
 			}
-		}
-	}
-	// for (let i = 0; i < correctAnswers.length; i += 1) {
-	// 	const correctAnswer = correctAnswers[i];
-	// 	const selectedAnswer = selectedAnswers.find((selectedAns) => selectedAns.quizzId === correctAnswer.quizzId);
-	// 	if (selectedAnswer) {
-	// 		const { correctOptions } = correctAnswer;
-	// 		const { selectedOptions } = selectedAnswer;
-	// 		if (correctOptions.length === selectedOptions.length) {
-	// 			let isCorrect = true;
-	// 			for (let j = 0; j < correctOptions.length; j += 1) {
-	// 				const correctOption = correctOptions[j];
-	// 				if (!selectedOptions.includes(correctOption)) {
-	// 					isCorrect = false;
-	// 					break;
-	// 				}
-	// 			}
-	// 			if (isCorrect) {
-	// 				totalCorrect += 1;
-	// 			}
-	// 		}
-	// 	}
-	// }
+		});
+
+		return totalCorrect;
+	};
+
+	const totalCorrect = countTotalCorrect(correctAnswers, selectedAnswers);
 
 	return QuizzMark.create({
 		...quizzMarkBody,

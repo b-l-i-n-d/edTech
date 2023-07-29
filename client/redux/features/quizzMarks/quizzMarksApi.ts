@@ -38,7 +38,7 @@ export const quizzMarksApi = apiSlice.injectEndpoints({
                 method: "POST",
                 body: { video, student, selectedAnswers },
             }),
-            invalidatesTags: ["QuizzMarks"],
+            invalidatesTags: ["QuizzMarks", "Dashboard"],
         }),
     }),
 });

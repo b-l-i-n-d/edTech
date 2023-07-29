@@ -1,7 +1,8 @@
-import { Button, Menu, Typography } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import { Avatar, Drawer, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import {
@@ -21,6 +22,8 @@ const UserMenu: React.FC = () => {
     const refreshToken = useAppSelector(selectRefreshToken);
     const [logout, { isLoading: isLogoutLoading }] = useLogoutMutation();
 
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
     const handleLogout = () => {
         logout(refreshToken);
         dispatch(videoSelected(null));
@@ -31,9 +34,7 @@ const UserMenu: React.FC = () => {
             key: "",
             label: (
                 <Link href="/">
-                    <Button type="text">
-                        <Typography.Text strong>Home</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Home</Typography.Text>
                 </Link>
             ),
         },
@@ -41,9 +42,7 @@ const UserMenu: React.FC = () => {
             key: "course",
             label: (
                 <Link href={`/course/${currentVideoId}`}>
-                    <Button type="text">
-                        <Typography.Text strong>Course Access</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Course Access</Typography.Text>
                 </Link>
             ),
         },
@@ -51,15 +50,20 @@ const UserMenu: React.FC = () => {
             key: "dashboard",
             label: (
                 <Link href="/dashboard">
-                    <Button type="text">
-                        <Typography.Text strong>Dashboard</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Dashboard</Typography.Text>
                 </Link>
             ),
         },
         {
             key: "user",
-            label: <Typography.Text strong>{user?.name}</Typography.Text>,
+            label: (
+                <>
+                    <Avatar>{user?.name?.charAt(0).toUpperCase()}</Avatar>
+                    <Typography.Text strong className="ml-2 md:hidden">
+                        {user?.name}
+                    </Typography.Text>
+                </>
+            ),
             children: [
                 {
                     key: "/profile",
@@ -72,20 +76,58 @@ const UserMenu: React.FC = () => {
                 },
             ],
         },
+        {
+            key: "drawer",
+            label: (
+                <span className="md:hidden">
+                    <MenuOutlined />
+                </span>
+            ),
+            onClick: () => setDrawerOpen(true),
+        },
     ];
 
     return (
-        <Menu
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                flex: 1,
-            }}
-            mode="horizontal"
-            selectedKeys={[pathname]}
-            items={items}
-        />
+        <>
+            <div className="hidden md:flex md:items-center md:justify-end md:flex-1">
+                <Menu
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        flex: 1,
+                    }}
+                    mode="horizontal"
+                    selectedKeys={[pathname]}
+                    items={items}
+                />
+            </div>
+            <div className="flex items-center justify-end flex-1 md:hidden">
+                <Menu
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        flex: 1,
+                    }}
+                    mode="horizontal"
+                    selectedKeys={[pathname]}
+                    items={items.filter((item) => item.key === "drawer")}
+                />
+            </div>
+
+            <Drawer
+                open={drawerOpen}
+                placement="right"
+                onClose={() => setDrawerOpen(false)}
+            >
+                <Menu
+                    mode="vertical"
+                    selectedKeys={[pathname]}
+                    items={items.filter((item) => item.key !== "drawer")}
+                />
+            </Drawer>
+        </>
     );
 };
 

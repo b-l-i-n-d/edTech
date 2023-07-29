@@ -157,6 +157,13 @@ const AssignmentsMarks: NextPage = () => {
             title: "Marks",
             dataIndex: "marks",
             key: "marks",
+            render: (text: string, record: IAssignmentMark) => (
+                <span>
+                    {text} /{" "}
+                    {typeof record.assignment !== "string" &&
+                        record.assignment.totalMarks}
+                </span>
+            ),
         },
         {
             title: "Status",
@@ -449,6 +456,9 @@ const AssignmentsMarks: NextPage = () => {
                                 }}
                             />
                         </Form.Item>
+                        <span className="text-xs text-gray-400">
+                            Total Marks: {form.getFieldValue("totalMarks")}
+                        </span>
                         <Form.Item
                             label="Feedback"
                             name="feedback"

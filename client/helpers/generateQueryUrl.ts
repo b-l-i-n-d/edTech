@@ -1,6 +1,7 @@
 import {
     IAssignmentsMarksQueryParams,
     IQuizzMarksQueryParams,
+    IQuizzSetsQueryParams,
     IQuizzesQueryParams,
     IUsersQueryParams,
     IVideosQueryParams,
@@ -14,6 +15,7 @@ export default function generateQueryUrl(
         | IQuizzesQueryParams
         | IAssignmentsMarksQueryParams
         | IQuizzMarksQueryParams
+        | IQuizzSetsQueryParams
 ) {
     let query = url + "?";
     for (const [key, value] of Object.entries(params)) {

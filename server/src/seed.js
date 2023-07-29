@@ -4,7 +4,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import config from './config/config.js';
 import logger from './config/logger.js';
-import { Assignment, AssignmentMark, Quizz, Video } from './models/index.js';
+import { Assignment, Quizz, QuizzSet, Video } from './models/index.js';
 
 mongoose
 	.connect(config.mongoose.url, config.mongoose.options)
@@ -89,6 +89,39 @@ const createQuizzes = async (videos) => {
 	}
 };
 
+const createQuizzSets = async (quizzes) => {
+	try {
+		await QuizzSet.deleteMany();
+
+		// Create an empty Map to store quizzes by video ID
+		const quizzesByVideoId = new Map();
+
+		// Group quizzes by video ID
+		quizzes.forEach((quizz) => {
+			const videoId = quizz.video.toString();
+			if (quizzesByVideoId.has(videoId)) {
+				quizzesByVideoId.get(videoId).push(quizz._id);
+			} else {
+				quizzesByVideoId.set(videoId, [quizz._id]);
+			}
+		});
+
+		// Create quizz sets for each video
+		const createQuizzSetPromises = Array.from(quizzesByVideoId.entries()).map(async ([videoId, quizIds]) => {
+			await QuizzSet.create({
+				video: videoId,
+				quizzes: quizIds,
+			});
+		});
+
+		await Promise.all(createQuizzSetPromises);
+
+		logger.info('Quizz sets created successfully');
+	} catch (error) {
+		logger.error(error);
+	}
+};
+
 const createAssignments = async (videos) => {
 	try {
 		await Assignment.deleteMany();
@@ -116,36 +149,37 @@ const createAssignments = async (videos) => {
 	}
 };
 
-const createAssignmentsMarks = async (assignments) => {
-	try {
-		await AssignmentMark.deleteMany();
+// const createAssignmentsMarks = async (assignments) => {
+// 	try {
+// 		await AssignmentMark.deleteMany();
 
-		const assignmentsMarks = await Promise.all(
-			Array.from({ length: 50 }, async () => {
-				const assignment = assignments[Math.floor(Math.random() * assignments.length)];
-				const assignmentMark = await AssignmentMark.create({
-					assignment: assignment._id,
-					student: '64631c0d568ac4c2ea957de9',
-					repoLink: faker.internet.url(),
-					webpageLink: faker.internet.url(),
-				});
-				return assignmentMark;
-			})
-		);
+// 		const assignmentsMarks = await Promise.all(
+// 			Array.from({ length: 50 }, async () => {
+// 				const assignment = assignments[Math.floor(Math.random() * assignments.length)];
+// 				const assignmentMark = await AssignmentMark.create({
+// 					assignment: assignment._id,
+// 					student: '64631c0d568ac4c2ea957de9',
+// 					repoLink: faker.internet.url(),
+// 					webpageLink: faker.internet.url(),
+// 				});
+// 				return assignmentMark;
+// 			})
+// 		);
 
-		logger.info('Assignments marks created successfully');
-		return assignmentsMarks;
-	} catch (error) {
-		logger.error(error);
-	}
-};
+// 		logger.info('Assignments marks created successfully');
+// 		return assignmentsMarks;
+// 	} catch (error) {
+// 		logger.error(error);
+// 	}
+// };
 
 const seed = async () => {
 	try {
 		const videos = await createVideos();
-		await createQuizzes(videos);
-		const assignments = await createAssignments(videos);
-		await createAssignmentsMarks(assignments);
+		const quizzes = await createQuizzes(videos);
+		await createQuizzSets(quizzes);
+		await createAssignments(videos);
+		// await createAssignmentsMarks(assignments);
 
 		logger.info('Seeded successfully');
 	} catch (error) {
