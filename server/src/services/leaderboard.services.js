@@ -107,7 +107,7 @@ const queryLeaderboard = async (student) => {
 
 	return {
 		student: studentData,
-		leaderboard: leaderboard.slice(0, 25),
+		leaderboard,
 	};
 };
 
