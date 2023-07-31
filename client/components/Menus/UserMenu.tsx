@@ -55,6 +55,14 @@ const UserMenu: React.FC = () => {
             ),
         },
         {
+            key: "leaderboard",
+            label: (
+                <Link href="/leaderboard">
+                    <Typography.Text strong>Leaderboard</Typography.Text>
+                </Link>
+            ),
+        },
+        {
             key: "user",
             label: (
                 <>

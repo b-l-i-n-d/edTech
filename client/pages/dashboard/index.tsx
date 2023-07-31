@@ -264,6 +264,7 @@ const Dashboard = () => {
                     <Card bordered={false}>
                         <div className="flex items-center justify-between space-y-2 md:space-y-0 flex-wrap">
                             <List
+                                loading={isGetDashboardDataLoading}
                                 className="w-full md:w-2/3"
                                 itemLayout="horizontal"
                                 size="small"
@@ -282,7 +283,7 @@ const Dashboard = () => {
 
                             <div className="flex items-center flex-col space-y-2 w-full md:w-1/3">
                                 <Progress
-                                    type="circle"
+                                    type="dashboard"
                                     percent={
                                         (
                                             (quizzReport.totalMarksObtained /
@@ -317,7 +318,7 @@ const Dashboard = () => {
                         marks are shown as red
                     </Typography.Text>
 
-                    <Card bordered={false}>
+                    <Card bordered={false} loading={isGetDashboardDataLoading}>
                         <Row gutter={[16, 16]}>
                             {quizzWithMarks.length > 0 &&
                                 quizzWithMarks.map((quizz, index) => (
@@ -355,7 +356,7 @@ const Dashboard = () => {
                                                         <Col>
                                                             <div className="flex flex-col items-center">
                                                                 <Progress
-                                                                    type="circle"
+                                                                    type="dashboard"
                                                                     percent={
                                                                         (
                                                                             (quizz
@@ -377,7 +378,12 @@ const Dashboard = () => {
                                                         </Col>
                                                     </Row>
                                                 }
-                                                title={quizz.video.title}
+                                                title={
+                                                    quizz.video.title.substring(
+                                                        0,
+                                                        30
+                                                    ) + "..."
+                                                }
                                             >
                                                 <Button
                                                     danger={
@@ -429,6 +435,7 @@ const Dashboard = () => {
                         <Table
                             size="small"
                             scroll={{ x: true }}
+                            loading={isGetDashboardDataLoading}
                             dataSource={assignmentWithMarks}
                             columns={[
                                 {
@@ -543,6 +550,7 @@ const Dashboard = () => {
                         <div className="flex items-center justify-between space-y-2 md:space-y-0 flex-wrap">
                             <List
                                 className="w-full md:w-2/3"
+                                loading={isGetDashboardDataLoading}
                                 itemLayout="horizontal"
                                 size="small"
                                 dataSource={assignmentProgressList}
@@ -560,7 +568,7 @@ const Dashboard = () => {
 
                             <div className="flex items-center flex-col space-y-2 w-full md:w-1/3">
                                 <Progress
-                                    type="circle"
+                                    type="dashboard"
                                     percent={
                                         (
                                             (assignmentReport.totalMarksObtained /

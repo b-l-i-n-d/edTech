@@ -740,10 +740,10 @@ const CoursePlayer: NextPage = () => {
                         header={
                             <Typography.Title level={5} className="px-4 pt-4">
                                 {`Progress: ${
-                                    (user.watchedVideos.length /
+                                    (user?.watchedVideos.length /
                                         (videos?.totalResults ?? 0)) *
                                     100
-                                }% (${user.watchedVideos.length}/${
+                                }% (${user?.watchedVideos.length}/${
                                     videos?.totalResults ?? 0
                                 })`}
                             </Typography.Title>
@@ -1125,7 +1125,10 @@ const CoursePlayer: NextPage = () => {
                                         >
                                             <div className="flex justify-center mb-4">
                                                 <Progress
-                                                    type="circle"
+                                                    type="dashboard"
+                                                    format={(percent) =>
+                                                        `${percent}%`
+                                                    }
                                                     percent={
                                                         (
                                                             (quizzMark

@@ -42,6 +42,7 @@ export const apiSlice = createApi({
         "AssignmentsMarks",
         "Auth",
         "Dashboard",
+        "Leaderboard",
         "Users",
         "Videos",
         "Quizzes",

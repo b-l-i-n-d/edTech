@@ -16,7 +16,7 @@ export interface IResultQueryParams {
 }
 
 export interface IUser {
-    id: number;
+    id: string;
     name: string;
     email: string;
     isEmailVerified: boolean;
@@ -236,6 +236,25 @@ export interface IDashboardData {
             marks: number;
             submittedAt: string;
         };
+    }[];
+}
+
+export interface ILeaderboard {
+    student?: {
+        id: string;
+        name: string;
+        quizzTotalMarks: number;
+        assignmentTotalMarks: number;
+        totalMarks: number;
+        rank: number;
+    };
+    leaderboard: {
+        id: string;
+        name: string;
+        quizzTotalMarks: number;
+        assignmentTotalMarks: number;
+        totalMarks: number;
+        rank: number;
     }[];
 }
 

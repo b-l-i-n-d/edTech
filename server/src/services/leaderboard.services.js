@@ -5,7 +5,6 @@ import { AssignmentMark, QuizzMark } from '../models/index.js';
  * @returns {Promise<QueryResult>}
  */
 const queryLeaderboard = async (student) => {
-	// use aggregate to get tomalMarks per student
 	const quizzMarkLeaderboard = await QuizzMark.aggregate([
 		{
 			$group: {
@@ -17,7 +16,7 @@ const queryLeaderboard = async (student) => {
 		},
 		{
 			$lookup: {
-				from: 'users', // Replace 'students' with the actual name of the 'students' collection
+				from: 'users',
 				localField: '_id',
 				foreignField: '_id',
 				as: 'student',
@@ -31,12 +30,12 @@ const queryLeaderboard = async (student) => {
 				_id: 0,
 				id: '$student._id',
 				name: '$student.name',
-				totalMarks: '$totalMarks',
+				quizzTotalMarks: '$totalMarks',
 			},
 		},
 		{
 			$sort: {
-				totalMarks: -1,
+				quizzTotalMarks: -1,
 			},
 		},
 	]);
@@ -52,7 +51,7 @@ const queryLeaderboard = async (student) => {
 		},
 		{
 			$lookup: {
-				from: 'users', // Replace 'students' with the actual name of the 'students' collection
+				from: 'users',
 				localField: '_id',
 				foreignField: '_id',
 				as: 'student',
@@ -66,49 +65,64 @@ const queryLeaderboard = async (student) => {
 				_id: 0,
 				id: '$student._id',
 				name: '$student.name',
-				totalMarks: '$totalMarks',
+				assignmentTotalMarks: '$totalMarks',
 			},
 		},
 		{
 			$sort: {
-				totalMarks: -1,
+				assignmentTotalMarks: -1,
 			},
 		},
 	]);
 
-	const combinedLeaderboard = [...quizzMarkLeaderboard, ...assignmentMarkLeaderboard];
+	const combinedMarks = [...quizzMarkLeaderboard, ...assignmentMarkLeaderboard];
 
-	const leaderboard = combinedLeaderboard.reduce((acc, curr) => {
+	const mergedAndFilteredArray = combinedMarks.reduce((acc, curr) => {
 		const existingStudent = acc.find((st) => st.id.toString() === curr.id.toString());
+
 		if (existingStudent) {
-			existingStudent.totalMarks += curr.totalMarks;
+			existingStudent.quizzTotalMarks = (existingStudent.quizzTotalMarks || 0) + (curr.quizzTotalMarks || 0);
+			existingStudent.assignmentTotalMarks =
+				(existingStudent.assignmentTotalMarks || 0) + (curr.assignmentTotalMarks || 0);
 		} else {
-			acc.push(curr);
+			acc.push({
+				...curr,
+				quizzTotalMarks: curr.quizzTotalMarks || 0,
+				assignmentTotalMarks: curr.assignmentTotalMarks || 0,
+			});
 		}
 		return acc;
 	}, []);
 
-	leaderboard.sort((a, b) => b.totalMarks - a.totalMarks);
+	const leaderboard = mergedAndFilteredArray
+		.map((st) => {
+			const totalMarks = (st.quizzTotalMarks || 0) + (st.assignmentTotalMarks || 0);
+			return {
+				...st,
+				totalMarks,
+			};
+		})
+		.sort((a, b) => b.totalMarks - a.totalMarks);
 
-	let rank = 1;
+	let currentRank = 0;
+	let prevMarks = null;
 
-	leaderboard.forEach((st, index) => {
-		if (index > 0 && student.totalMarks === leaderboard[index - 1].totalMarks) {
-			// eslint-disable-next-line no-param-reassign
-			st.rank = leaderboard[index - 1].rank;
-		} else {
-			// eslint-disable-next-line no-param-reassign
-			st.rank = rank;
-			rank += 1;
+	const rankedLeaderboard = leaderboard.map((st) => {
+		if (prevMarks !== st.totalMarks) {
+			currentRank += 1;
 		}
+		prevMarks = st.totalMarks;
+		return {
+			...st,
+			rank: currentRank,
+		};
 	});
 
-	const studentData = leaderboard.find((st) => st.id.toString() === student.toString());
+	const studentData = student && rankedLeaderboard.find((st) => st.id.toString() === student.toString());
 
-	return {
-		student: studentData,
-		leaderboard,
-	};
+	return studentData
+		? { student: studentData, leaderboard: rankedLeaderboard.slice(0, 25) }
+		: { leaderboard: rankedLeaderboard };
 };
 
 export default { queryLeaderboard };
