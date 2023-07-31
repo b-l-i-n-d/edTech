@@ -1,10 +1,10 @@
 import Joi from 'joi';
 import customValidation from './custom.validation.js';
 
-const getDashboardData = {
+const getLeaderboard = {
 	query: {
 		student: Joi.required().custom(customValidation.objectId),
 	},
 };
 
-export default { getDashboardData };
+export default { getLeaderboard };

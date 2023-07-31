@@ -5,6 +5,7 @@ import assignmentMarkRoute from './assignmentMark.route.js';
 import authRoute from './auth.route.js';
 import dashboardRoute from './dashboard.route.js';
 import docsRoute from './docs.route.js';
+import leaderboardRoute from './leaderboard.route.js';
 import quizzRoute from './quizz.route.js';
 import quizzMarkRoute from './quizzMark.route.js';
 import quizzSetRoute from './quizzSet.route.js';
@@ -49,6 +50,10 @@ const defaultRoutes = [
 	{
 		path: '/assignments-marks',
 		route: assignmentMarkRoute,
+	},
+	{
+		path: '/leaderboard',
+		route: leaderboardRoute,
 	},
 ];
 

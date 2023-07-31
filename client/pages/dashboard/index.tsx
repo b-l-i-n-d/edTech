@@ -321,7 +321,7 @@ const Dashboard = () => {
                         <Row gutter={[16, 16]}>
                             {quizzWithMarks.length > 0 &&
                                 quizzWithMarks.map((quizz, index) => (
-                                    <Col key={quizz.id} span={3}>
+                                    <Col key={quizz.id} xs={3} md={6} lg={3}>
                                         {quizz.quizzMark ? (
                                             <Popover
                                                 content={
@@ -427,6 +427,8 @@ const Dashboard = () => {
                             and details of the assignment
                         </div>
                         <Table
+                            size="small"
+                            scroll={{ x: true }}
                             dataSource={assignmentWithMarks}
                             columns={[
                                 {
@@ -435,7 +437,9 @@ const Dashboard = () => {
                                     key: "title",
                                     render: (text, record) => (
                                         <Link href={`/course/${record.video}`}>
-                                            {text}
+                                            <span className="line-clamp-2">
+                                                {text}
+                                            </span>
                                         </Link>
                                     ),
                                 },
