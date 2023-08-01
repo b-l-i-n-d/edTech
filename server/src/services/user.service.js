@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { User } from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
+import imageUpload from '../utils/ImageUpload.js';
 
 /**
  * Create a user
@@ -62,7 +63,14 @@ const updateUserById = async (userId, updateBody) => {
 	}
 
 	// eslint-disable-next-line no-param-reassign
-	updateBody.watchedVideos = [...user.watchedVideos, ...updateBody.watchedVideos];
+	updateBody.watchedVideos = updateBody.watchedVideos
+		? [...user.watchedVideos, ...updateBody.watchedVideos]
+		: user.watchedVideos;
+
+	const photo = updateBody.photo && (await imageUpload(updateBody.photo, userId));
+
+	// eslint-disable-next-line no-param-reassign
+	updateBody.photo = photo ? photo.secure_url : user.photo;
 
 	Object.assign(user, updateBody);
 	await user.save();

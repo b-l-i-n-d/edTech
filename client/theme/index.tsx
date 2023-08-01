@@ -1,8 +1,15 @@
 import { ConfigProvider } from "antd";
-import React from "react";
 
 const withTheme = (node: JSX.Element) => (
-    <ConfigProvider>{node}</ConfigProvider>
+    <ConfigProvider
+        theme={{
+            token: {
+                colorPrimary: "#1777ff",
+            },
+        }}
+    >
+        {node}
+    </ConfigProvider>
 );
 
 export default withTheme;

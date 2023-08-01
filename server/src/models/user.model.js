@@ -40,6 +40,9 @@ const userSchema = Schema(
 			enum: roles,
 			default: 'user',
 		},
+		photo: {
+			type: String,
+		},
 		isEmailVerified: {
 			type: Boolean,
 			default: false,

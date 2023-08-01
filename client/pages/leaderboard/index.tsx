@@ -1,11 +1,13 @@
 import { TrophyTwoTone } from "@ant-design/icons";
-import { Card, Divider, Table, Typography } from "antd";
+import { Avatar, Card, Divider, Table, Typography } from "antd";
+import { NextPage } from "next";
 import Head from "next/head";
+import { Auth } from "../../components";
 import { useAppSelector } from "../../hooks";
 import { selectUser } from "../../redux/features/auth/authSelector";
 import { useGetLeaderboardQuery } from "../../redux/features/leaderboard/leaderboardApi";
 
-const Leaderboard = () => {
+const Leaderboard: NextPage = () => {
     const user = useAppSelector(selectUser);
     const {
         data: leaderboardData,
@@ -32,6 +34,30 @@ const Leaderboard = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
+            render: (name: string, record: any) => {
+                return (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Avatar
+                            size={"small"}
+                            src={record.photo && record.photo}
+                        >
+                            {!record.photo && name[0]}
+                        </Avatar>
+                        <span
+                            style={{
+                                marginLeft: 10,
+                            }}
+                        >
+                            {name}
+                        </span>
+                    </div>
+                );
+            },
         },
         {
             title: "Quiz Marks",
@@ -51,7 +77,7 @@ const Leaderboard = () => {
     ];
 
     return (
-        <>
+        <Auth.UserOnly>
             <Head>
                 <title>Leaderboard</title>
             </Head>
@@ -89,7 +115,7 @@ const Leaderboard = () => {
                             fontWeight: "semibold",
                         }}
                     >
-                        Top 25
+                        Top 25 students
                     </Typography.Title>
 
                     <Table
@@ -100,7 +126,7 @@ const Leaderboard = () => {
                     />
                 </Card>
             </div>
-        </>
+        </Auth.UserOnly>
     );
 };
 

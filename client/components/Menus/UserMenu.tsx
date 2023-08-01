@@ -1,4 +1,12 @@
-import { MenuOutlined } from "@ant-design/icons";
+import {
+    BarChartOutlined,
+    DashboardOutlined,
+    HomeOutlined,
+    LogoutOutlined,
+    MenuOutlined,
+    PlaySquareOutlined,
+    UserOutlined,
+} from "@ant-design/icons";
 import { Avatar, Drawer, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -32,6 +40,7 @@ const UserMenu: React.FC = () => {
     const items = [
         {
             key: "",
+            icon: <HomeOutlined />,
             label: (
                 <Link href="/">
                     <Typography.Text strong>Home</Typography.Text>
@@ -40,6 +49,7 @@ const UserMenu: React.FC = () => {
         },
         {
             key: "course",
+            icon: <PlaySquareOutlined />,
             label: (
                 <Link href={`/course/${currentVideoId}`}>
                     <Typography.Text strong>Course Access</Typography.Text>
@@ -48,6 +58,7 @@ const UserMenu: React.FC = () => {
         },
         {
             key: "dashboard",
+            icon: <DashboardOutlined />,
             label: (
                 <Link href="/dashboard">
                     <Typography.Text strong>Dashboard</Typography.Text>
@@ -56,6 +67,7 @@ const UserMenu: React.FC = () => {
         },
         {
             key: "leaderboard",
+            icon: <BarChartOutlined />,
             label: (
                 <Link href="/leaderboard">
                     <Typography.Text strong>Leaderboard</Typography.Text>
@@ -66,7 +78,9 @@ const UserMenu: React.FC = () => {
             key: "user",
             label: (
                 <>
-                    <Avatar>{user?.name?.charAt(0).toUpperCase()}</Avatar>
+                    <Avatar src={user?.photo ? user?.photo : undefined}>
+                        {!user?.photo && user?.name?.charAt(0).toUpperCase()}
+                    </Avatar>
                     <Typography.Text strong className="ml-2 md:hidden">
                         {user?.name}
                     </Typography.Text>
@@ -74,11 +88,13 @@ const UserMenu: React.FC = () => {
             ),
             children: [
                 {
-                    key: "/profile",
-                    label: <Link href="/profile">Profile</Link>,
+                    key: "account",
+                    icon: <UserOutlined />,
+                    label: <Link href="/account">Account</Link>,
                 },
                 {
                     key: "logout",
+                    icon: <LogoutOutlined />,
                     label: "Logout",
                     onClick: handleLogout,
                 },
@@ -130,7 +146,7 @@ const UserMenu: React.FC = () => {
                 onClose={() => setDrawerOpen(false)}
             >
                 <Menu
-                    mode="vertical"
+                    mode="inline"
                     selectedKeys={[pathname]}
                     items={items.filter((item) => item.key !== "drawer")}
                 />

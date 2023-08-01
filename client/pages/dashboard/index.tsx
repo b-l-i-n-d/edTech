@@ -19,6 +19,7 @@ import {
     Typography,
 } from "antd";
 import dayjs from "dayjs";
+import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Auth } from "../../components";
@@ -26,7 +27,7 @@ import { useAppSelector } from "../../hooks";
 import { selectUser } from "../../redux/features/auth/authSelector";
 import { useGetDashboardDataQuery } from "../../redux/features/dashboard/dashboardApi";
 
-const Dashboard = () => {
+const Dashboard: NextPage = () => {
     const user = useAppSelector(selectUser);
     const {
         data: dashboardData,

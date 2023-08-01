@@ -21,6 +21,7 @@ export interface IUser {
     email: string;
     isEmailVerified: boolean;
     role: "user" | "admin";
+    photo: string;
     watchedVideos: string[] | IVideo[];
 }
 
@@ -243,6 +244,7 @@ export interface ILeaderboard {
     student?: {
         id: string;
         name: string;
+        photo: string;
         quizzTotalMarks: number;
         assignmentTotalMarks: number;
         totalMarks: number;
@@ -251,6 +253,7 @@ export interface ILeaderboard {
     leaderboard: {
         id: string;
         name: string;
+        photo: string;
         quizzTotalMarks: number;
         assignmentTotalMarks: number;
         totalMarks: number;

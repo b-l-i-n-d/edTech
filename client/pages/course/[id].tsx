@@ -740,10 +740,10 @@ const CoursePlayer: NextPage = () => {
                         header={
                             <Typography.Title level={5} className="px-4 pt-4">
                                 {`Progress: ${
-                                    (user?.watchedVideos.length /
+                                    (user?.watchedVideos?.length /
                                         (videos?.totalResults ?? 0)) *
                                     100
-                                }% (${user?.watchedVideos.length}/${
+                                }% (${user?.watchedVideos?.length}/${
                                     videos?.totalResults ?? 0
                                 })`}
                             </Typography.Title>
@@ -795,7 +795,7 @@ const CoursePlayer: NextPage = () => {
                                             .substring(11, 19)} miniutes`}
                                     />
                                     <div>
-                                        {user.watchedVideos.includes(
+                                        {user?.watchedVideos?.includes(
                                             item.id
                                         ) && (
                                             <CheckCircleFilled
