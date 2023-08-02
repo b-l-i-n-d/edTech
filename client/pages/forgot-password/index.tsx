@@ -1,3 +1,4 @@
+import { LoadingOutlined } from "@ant-design/icons";
 import {
     Button,
     Col,
@@ -12,57 +13,74 @@ import {
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Auth } from "../../components";
-import { isFetchBaseQueryError } from "../../helpers";
-import { useAppSelector } from "../../hooks";
 import Logo from "../../public/assets/logos/logo_transparent.png";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
-import { selectUser } from "../../redux/features/auth/authSelector";
+import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
 
-const Login: NextPage = () => {
+const ForgotPassword: NextPage = () => {
+    const [form] = Form.useForm();
     const router = useRouter();
-    const user = useAppSelector(selectUser);
 
     const [
-        login,
-        { data: userData, isLoading: isLoginLoading, error: loginError },
-    ] = useLoginMutation();
+        forgotPassword,
+        {
+            isLoading: isForgotPasswordLoading,
+            error: updateForgotPasswordError,
+            isSuccess: isForgotPasswordSuccess,
+        },
+    ] = useForgotPasswordMutation();
 
     const onFinish = (values: any) => {
-        login(values);
+        console.log("Received values of form: ", values);
+        forgotPassword(values.email);
     };
 
     useEffect(() => {
-        if (!isLoginLoading && loginError) {
-            if (isFetchBaseQueryError(loginError)) {
-                notification.error({
-                    message: "Login Failed",
-                    description: loginError.data.message,
-                });
-            }
-        }
-
-        if (!isLoginLoading && userData) {
-            notification.success({
-                message: "Login Success",
-                description: "Welcome back",
+        if (isForgotPasswordLoading) {
+            notification.info({
+                key: "updateUser",
+                icon: <LoadingOutlined spin />,
+                message: "Sending request",
+                description: "Please wait a moment 👍",
+                duration: 0,
             });
-
-            if (userData?.role === "admin") {
-                router.push("/admin");
-            } else {
-                router.push("/");
-            }
         }
-    }, [isLoginLoading, loginError, router, userData]);
+
+        if (
+            !isForgotPasswordLoading &&
+            !updateForgotPasswordError &&
+            isForgotPasswordSuccess
+        ) {
+            notification.success({
+                key: "updateUser",
+                message: "Email sent",
+                description: "Email sent succesfully 👍",
+            });
+            form.resetFields();
+            router.push("/login");
+        }
+
+        if (!isForgotPasswordLoading && updateForgotPasswordError) {
+            notification.error({
+                key: "updateUser",
+                message: "Something went wrong",
+                description: "Failed to sent email 😥",
+            });
+        }
+    }, [
+        isForgotPasswordLoading,
+        updateForgotPasswordError,
+        isForgotPasswordSuccess,
+        form,
+        router,
+    ]);
 
     return (
         <Auth.LoginGuard>
             <Head>
-                <title>Login</title>
+                <title>Change Password</title>
             </Head>
             <Row
                 wrap={true}
@@ -77,22 +95,21 @@ const Login: NextPage = () => {
                             fontWeight: "bold",
                         }}
                     >
-                        Login
+                        Change Password
                     </Typography.Title>
                     <Typography.Text>
-                        Don&apos;t have an account?{" "}
-                        <Link href="/register">Register</Link>
+                        Enter your email to reset your password
                     </Typography.Text>
                     <Divider />
                     <Form
-                        name="login"
+                        form={form}
                         layout="vertical"
                         onFinish={onFinish}
                         autoComplete="off"
                     >
                         <Form.Item
-                            label="Email"
                             name="email"
+                            label="Email"
                             rules={[
                                 {
                                     required: true,
@@ -100,36 +117,22 @@ const Login: NextPage = () => {
                                 },
                                 {
                                     type: "email",
-                                    message: "Please input a valid email!",
+                                    message: "Please enter a valid email",
                                 },
                             ]}
                         >
                             <Input />
                         </Form.Item>
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please input your password!",
-                                },
-                            ]}
-                        >
-                            <Input.Password />
-                        </Form.Item>
-
-                        <Typography.Link href="/forgot-password">
-                            Forgot Password?
-                        </Typography.Link>
-
+                        <Typography.Text type="secondary">
+                            We will send you a password reset link to your email
+                        </Typography.Text>
                         <Form.Item className="mt-4">
                             <Button
+                                loading={isForgotPasswordLoading}
                                 type="primary"
                                 htmlType="submit"
-                                loading={isLoginLoading}
                             >
-                                Login
+                                Request Password Reset
                             </Button>
                         </Form.Item>
                     </Form>
@@ -162,10 +165,4 @@ const Login: NextPage = () => {
     );
 };
 
-export async function getServerSideProps() {
-    return {
-        props: {},
-    };
-}
-
-export default Login;
+export default ForgotPassword;

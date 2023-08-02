@@ -736,9 +736,9 @@ const CoursePlayer: NextPage = () => {
                 >
                     <List
                         loading={isGetVideosLoading}
-                        className="border-2 rounded-lg"
+                        bordered
                         header={
-                            <Typography.Title level={5} className="px-4 pt-4">
+                            <Typography.Title level={5} className="px-4 pt-3">
                                 {`Progress: ${
                                     (user?.watchedVideos?.length /
                                         (videos?.totalResults ?? 0)) *

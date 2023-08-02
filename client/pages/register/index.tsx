@@ -60,13 +60,25 @@ const Register: NextPage = () => {
                 className="mt-10"
             >
                 <Col span={12}>
-                    <Typography.Title level={3}>Register</Typography.Title>
+                    <Typography.Title
+                        level={4}
+                        style={{
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Register
+                    </Typography.Title>
                     <Typography.Text>
                         Already have an account?{" "}
                         <Link href="/login">Login</Link>
                     </Typography.Text>
                     <Divider />
-                    <Form name="login" layout="vertical" onFinish={onFinish}>
+                    <Form
+                        name="register"
+                        layout="vertical"
+                        onFinish={onFinish}
+                        autoComplete="off"
+                    >
                         <Form.Item
                             label="Name"
                             name="name"
@@ -122,7 +134,7 @@ const Register: NextPage = () => {
                                 },
                             ]}
                         >
-                            <Input.Password placeholder="ex" />
+                            <Input.Password placeholder="Enter your password" />
                         </Form.Item>
                         <Form.Item>
                             <Button
@@ -148,8 +160,13 @@ const Register: NextPage = () => {
                             height={50}
                             alt="Logo"
                         />
-                        <Typography.Title level={2}>
-                            Register to try!!!
+                        <Typography.Title
+                            level={2}
+                            style={{
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Register to try!
                         </Typography.Title>
                     </Space>
                 </Col>

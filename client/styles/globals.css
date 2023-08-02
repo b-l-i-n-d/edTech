@@ -4,6 +4,8 @@
 
 * {
     font-family: var(--font-inter);
+    margin: 0;
+    padding: 0;
 }
 
 /* width */

@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
-import Joi from 'joi';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import Joi from 'joi';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,6 +30,7 @@ const envVarsSchema = Joi.object()
 		CLOUDINARY_CLOUD_NAME: Joi.string().required().description('Cloudinary cloud name'),
 		CLOUDINARY_API_KEY: Joi.string().required().description('Cloudinary API key'),
 		CLOUDINARY_API_SECRET: Joi.string().required().description('Cloudinary API secret'),
+		APP_URL: Joi.string().required().description('App URL'),
 	})
 	.unknown();
 
@@ -71,5 +72,8 @@ const cloudinaryConfig = {
 	apiKey: envVars.CLOUDINARY_API_KEY,
 	apiSecret: envVars.CLOUDINARY_API_SECRET,
 };
+const appConfig = {
+	url: envVars.APP_URL,
+};
 
-export default { env, port, mongoose, jwt, email, cloudinaryConfig };
+export default { appConfig, env, port, mongoose, jwt, email, cloudinaryConfig };

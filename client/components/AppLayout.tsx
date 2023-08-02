@@ -2,8 +2,8 @@ import { Divider, Layout, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import Logo from "../public/assets/logos/logo_transparent.png";
 import { useAppSelector } from "../hooks";
+import Logo from "../public/assets/logos/logo_transparent.png";
 import { useRefreshTokensMutation } from "../redux/features/auth/authApi";
 import {
     selectRefreshToken,
@@ -61,8 +61,12 @@ const AppLayout: React.FC<Props> = ({ children }) => {
                     boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                 }}
             >
-                <Link href="/">
-                    <Image src={Logo} width={150} height={150} alt="Logo" />
+                <Link href="/" className="w-32">
+                    <Image
+                        src={Logo}
+                        className="w-full h-full align-middle"
+                        alt="Logo"
+                    />
                 </Link>
                 {menu}
             </Header>
@@ -78,7 +82,13 @@ const AppLayout: React.FC<Props> = ({ children }) => {
                 </div>
             </Content>
             <Footer className="flex justify-center items-center">
-                <Image src={Logo} width={100} height={50} alt="Logo" />
+                <Link href="/" className="object-cover w-32">
+                    <Image
+                        src={Logo}
+                        className="w-full h-full align-middle"
+                        alt="Logo"
+                    />
+                </Link>
                 <Divider
                     style={{
                         background: "gray",

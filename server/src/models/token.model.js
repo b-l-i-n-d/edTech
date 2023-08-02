@@ -35,6 +35,7 @@ const tokenSchema = Schema(
 
 // add plugin that converts mongoose to json
 tokenSchema.plugin(toJSON);
+tokenSchema.index({ expires: 1 }, { expireAfterSeconds: 0 });
 
 /**
  * @typedef Token

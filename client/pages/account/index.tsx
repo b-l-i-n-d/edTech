@@ -47,7 +47,6 @@ const Account: NextPage = () => {
     };
 
     const onFinish = (values: any) => {
-        console.log("Received values of form: ", values);
         updateUser({
             id: user?.id,
             photo: imageUrl as string,

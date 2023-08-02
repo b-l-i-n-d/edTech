@@ -9,64 +9,70 @@ import {
     Typography,
     notification,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Auth, Layouts } from "../../components";
 import { useAppSelector } from "../../hooks";
+import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
 import { selectUser } from "../../redux/features/auth/authSelector";
-import { useUpdateUserMutation } from "../../redux/features/users/usersApi";
 
 const Account: NextPage = () => {
     const user = useAppSelector(selectUser);
-    const [form] = useForm();
+    const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const [
-        updateUser,
+        forgotPassword,
         {
-            data: updatedUser,
-            isLoading: isUpdateUserLoading,
-            error: updateUserError,
+            isLoading: isForgotPasswordLoading,
+            error: updateForgotPasswordError,
+            isSuccess: isForgotPasswordSuccess,
         },
-    ] = useUpdateUserMutation();
+    ] = useForgotPasswordMutation();
 
     const onFinish = (values: any) => {
         console.log("Received values of form: ", values);
-        updateUser({
-            id: user?.id,
-            photo: imageUrl as string,
-        });
+        forgotPassword(values.email);
     };
 
     useEffect(() => {
-        if (isUpdateUserLoading) {
+        if (isForgotPasswordLoading) {
             notification.info({
                 key: "updateUser",
                 icon: <LoadingOutlined spin />,
-                message: "Updating your profile",
+                message: "Sending request",
                 description: "Please wait a moment 👍",
                 duration: 0,
             });
         }
 
-        if (!isUpdateUserLoading && !updateUserError && updatedUser) {
+        if (
+            !isForgotPasswordLoading &&
+            !updateForgotPasswordError &&
+            isForgotPasswordSuccess
+        ) {
             notification.success({
                 key: "updateUser",
-                message: "Profile updated successfully",
-                description: "Updated your profile successfully 👍",
+                message: "Email sent",
+                description: "Email sent succesfully 👍",
             });
+            form.resetFields();
         }
 
-        if (!isUpdateUserLoading && updateUserError) {
+        if (!isForgotPasswordLoading && updateForgotPasswordError) {
             notification.error({
                 key: "updateUser",
                 message: "Something went wrong",
-                description: "Failed to update your profile 😥",
+                description: "Failed to sent email 😥",
             });
         }
-    }, [isUpdateUserLoading, updatedUser, updateUserError]);
+    }, [
+        isForgotPasswordLoading,
+        updateForgotPasswordError,
+        isForgotPasswordSuccess,
+        form,
+    ]);
 
     return (
         <Auth.UserOnly>
@@ -87,7 +93,12 @@ const Account: NextPage = () => {
                 </Typography.Text>
                 <Divider />
 
-                <Form form={form} layout="vertical" onFinish={onFinish}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onFinish}
+                    autoComplete="off"
+                >
                     <Row gutter={[32, 32]}>
                         <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                             <Form.Item
@@ -112,9 +123,9 @@ const Account: NextPage = () => {
                             </Typography.Text>
                         </Col>
                     </Row>
-                    <Form.Item>
+                    <Form.Item className="mt-4">
                         <Button
-                            loading={isUpdateUserLoading}
+                            loading={isForgotPasswordLoading}
                             type="primary"
                             htmlType="submit"
                         >

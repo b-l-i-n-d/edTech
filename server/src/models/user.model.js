@@ -27,10 +27,10 @@ const userSchema = Schema(
 			type: String,
 			required: true,
 			trim: true,
-			minlength: 8,
+			minlength: 6,
 			validate(value) {
-				if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-					throw new Error('Password must contain at least one letter and one number');
+				if (!value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)) {
+					throw new Error('Password should be combination of one uppercase, one lower case, one special char.');
 				}
 			},
 			private: true, // used by the toJSON plugin

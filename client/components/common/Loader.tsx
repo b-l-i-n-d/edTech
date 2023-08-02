@@ -1,18 +1,18 @@
 import { Spin } from "antd";
+import Image from "next/image";
 import React from "react";
 import Logo from "../../public/assets/logos/logo_transparent.png";
-import Image from "next/image";
 
 const Loader: React.FC = () => {
     return (
         <div className="flex flex-col h-screen justify-center items-center">
-            <Image
-                className="mb-60"
-                src={Logo}
-                alt="DOCAPP_Logo"
-                width={250}
-                height={250}
-            />
+            <div className="w-60">
+                <Image
+                    className="mb-60 w-full h-auto align-middle"
+                    src={Logo}
+                    alt="DOCAPP_Logo"
+                />
+            </div>
             <Spin size="large" />
         </div>
     );

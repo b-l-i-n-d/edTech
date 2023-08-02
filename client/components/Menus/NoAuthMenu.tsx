@@ -1,4 +1,9 @@
-import { Button, Menu, Typography } from "antd";
+import {
+    HomeOutlined,
+    InfoCircleOutlined,
+    LoginOutlined,
+} from "@ant-design/icons";
+import { Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -10,23 +15,24 @@ const NoAuthMenu: React.FC = () => {
     const items = [
         {
             key: "/",
+            icon: <HomeOutlined />,
             label: (
                 <Link href="/">
-                    <Button type="text">
-                        <Typography.Text strong>Home</Typography.Text>
-                    </Button>
+                    <Typography.Text strong>Home</Typography.Text>
                 </Link>
             ),
         },
         {
             key: "/about",
-            label: <Button type="text">About</Button>,
+            icon: <InfoCircleOutlined />,
+            label: <Typography.Text strong>About</Typography.Text>,
         },
         {
             key: "/login",
+            icon: <LoginOutlined />,
             label: (
                 <Link href="/login">
-                    <Button type="text">Login</Button>
+                    <Typography.Text strong>Login</Typography.Text>
                 </Link>
             ),
         },
