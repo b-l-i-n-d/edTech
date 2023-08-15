@@ -81,7 +81,7 @@ const UserMenu: React.FC = () => {
                     <Avatar src={user?.photo ? user?.photo : undefined}>
                         {!user?.photo && user?.name?.charAt(0).toUpperCase()}
                     </Avatar>
-                    <Typography.Text strong className="ml-2 md:hidden">
+                    <Typography.Text strong className="ml-2 lg:hidden">
                         {user?.name}
                     </Typography.Text>
                 </>

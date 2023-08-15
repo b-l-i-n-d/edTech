@@ -29,7 +29,11 @@ const NoAuthMenu: React.FC = () => {
         {
             key: "/about",
             icon: <InfoCircleOutlined />,
-            label: <Typography.Text strong>About</Typography.Text>,
+            label: (
+                <Link href="/about">
+                    <Typography.Text strong>About</Typography.Text>
+                </Link>
+            ),
         },
         {
             key: "/login",

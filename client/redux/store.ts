@@ -6,8 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { MakeStore, createWrapper } from "next-redux-wrapper";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import { apiSlice } from "./api/apiSlice";
+import storage from "./customStorage";
 import authSliceReducer from "./features/auth/authSlice";
 import videosSliceReducer from "./features/videos/videosSlice";
 
@@ -20,9 +20,11 @@ const rootReducer = combineReducers({
 const makeConfiguredStore = () =>
     configureStore({
         reducer: rootReducer,
-        devTools: true,
+        devTools: process.env.NODE_ENV !== "production",
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware({}).concat(apiSlice.middleware),
+            getDefaultMiddleware({
+                serializableCheck: false,
+            }).concat(apiSlice.middleware),
     });
 
 export const makeStore: MakeStore<any> = () => {
@@ -41,7 +43,9 @@ export const makeStore: MakeStore<any> = () => {
             reducer: persistedReducer,
             devTools: process.env.NODE_ENV !== "production",
             middleware: (getDefaultMiddleware) =>
-                getDefaultMiddleware({}).concat(apiSlice.middleware),
+                getDefaultMiddleware({
+                    serializableCheck: false,
+                }).concat(apiSlice.middleware),
         });
         store.__persistor = persistStore(store); // Nasty hack
         return store;
@@ -58,4 +62,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     Action<string>
 >;
 
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });
+export const wrapper = createWrapper<AppStore>(makeStore, {
+    debug: process.env.NODE_ENV !== "production",
+});

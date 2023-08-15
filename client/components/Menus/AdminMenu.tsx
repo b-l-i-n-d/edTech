@@ -28,6 +28,7 @@ const AdminMenu: React.FC = () => {
 
     const handleLogout = () => {
         logout(refreshToken);
+        router.push("/login");
     };
 
     const items = [

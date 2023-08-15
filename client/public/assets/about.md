@@ -305,115 +305,115 @@ git clone https://github.com/b-l-i-n-d/edTech.git
 
 #### Login
 
-![Login](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113262/learing-platform/screenshots/login_f5o6ew.png)
+![Login](./screenshots/login.png)
 
 #### Register
 
-![Register](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113263/learing-platform/screenshots/register_lyk6k2.png)
+![Register](./screenshots/register.png)
 
 #### Forgot password
 
-![Forgot password](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113265/learing-platform/screenshots/forgot-password_z1uhrd.png)
+![Forgot password](./screenshots/forgot-password.png)
 
 ### Home
 
-![Home](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113266/learing-platform/screenshots/home_ntq2um.png)
+![Home](./screenshots/home.png)
 
 ### User
 
 #### Course Access
 
-![Course Access](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113272/learing-platform/screenshots/course_vgsno1.png)
+![Course Access](./screenshots/course.png)
 
 #### Dashboard
 
-![Dashboard](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113265/learing-platform/screenshots/user-dashboard_adu4zh.png)
+![Dashboard](./screenshots/user-dashboard.png)
 
 #### Leaderboard
 
-![Leaderboard](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113262/learing-platform/screenshots/user-leaderboard_lxydyq.png)
+![Leaderboard](./screenshots/user-leaderboard.png)
 
 #### Profile
 
-![Profile](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113267/learing-platform/screenshots/user-profile_g6hkfz.png)
+![Profile](./screenshots/user-profile.png)
 
 #### Change password
 
-![Change password](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113268/learing-platform/screenshots/user-change-password_ayclsp.png)
+![Change password](./screenshots/user-change-password.png)
 
 ### Admin
 
 #### Dashboard
 
-![Dashboard](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113261/learing-platform/screenshots/admin-dashboard_pr7rsk.png)
+![Dashboard](./screenshots/admin-dashboard.png)
 
 #### Videos
 
 ##### All videos
 
-![Videos](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113270/learing-platform/screenshots/admin-videos_mttqoe.png)
+![Videos](./screenshots/admin-videos.png)
 
 ##### Add video
 
-![Add video](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113266/learing-platform/screenshots/admin-add-video_gegr2k.png)
+![Add video](./screenshots/admin-add-video.png)
 
 ##### Edit video
 
-![Edit video](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113269/learing-platform/screenshots/admin-edit-video_auszlx.png)
+![Edit video](./screenshots/admin-edit-video.png)
 
 #### View video
 
-![View video](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113268/learing-platform/screenshots/admin-view-video_xujqzx.png)
+![View video](./screenshots/admin-view-video.png)
 
 #### Quizzes
 
 ##### All quizzes
 
-![Quizzes](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113267/learing-platform/screenshots/admin-quizzes_hmu9bk.png)
+![Quizzes](./screenshots/admin-quizzes.png)
 
 ##### Add quiz
 
-![Add quiz](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113267/learing-platform/screenshots/admin-add-quizz_nd3if7.png)
+![Add quiz](./screenshots/admin-add-quizz.png)
 
 ##### Edit quiz
 
-![Edit quiz](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113261/learing-platform/screenshots/admin-edit-quizz_gulutm.png)
+![Edit quiz](./screenshots/admin-edit-quizz.png)
 
 #### View quiz
 
-![View quiz](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113263/learing-platform/screenshots/admin-view-quizz_p3vag6.png)
+![View quiz](./screenshots/admin-view-quizz.png)
 
 #### Assignments
 
 ##### All assignments
 
-![Assignments](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113262/learing-platform/screenshots/admin-assignments_hpdoqf.png)
+![Assignments](./screenshots/admin-assignments.png)
 
 ##### Add assignment
 
-![Add assignment](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113261/learing-platform/screenshots/admin-add-assignment_j13hhn.png)
+![Add assignment](./screenshots/admin-add-assignment.png)
 
 ##### Edit assignment
 
-![Edit assignment](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113264/learing-platform/screenshots/admin-edit-assingment-mark_zku5rh.png)
+![Edit assignment](./screenshots/admin-edit-assignment.png)
 
 #### View assignment
 
-![View assignment](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113261/learing-platform/screenshots/admin-view-assignment_rpxf1x.png)
+![View assignment](./screenshots/admin-view-assignment.png)
 
 #### Assignments marks
 
 ##### All assignments marks
 
-![Assignments marks](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113261/learing-platform/screenshots/admin-assignment-marks_f8ydet.png)
+![Assignments marks](./screenshots/admin-assignment-marks.png)
 
 ##### Edit assignment mark
 
-![Edit assignment mark](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113264/learing-platform/screenshots/admin-edit-assingment-mark_zku5rh.png)
+![Edit assignment mark](./screenshots/admin-edit-assingment-mark.png)
 
 ##### View assignment mark
 
-![View assignment mark](https://res.cloudinary.com/b-l-i-n-d/image/upload/v1692113267/learing-platform/screenshots/admin-view-assignment-mark_pgqoau.png)
+![View assignment mark](./screenshots/admin-view-assignment-mark.png)
 
 ## License
 

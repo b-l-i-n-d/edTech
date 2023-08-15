@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -24,16 +25,16 @@ export default function Landing() {
                     <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                             Announcing our next round of learning.{" "}
-                            <a
-                                href="#"
-                                className="font-semibold text-indigo-600"
+                            <Link
+                                href="/about"
+                                className="font-semibold text-blue-600"
                             >
                                 <span
                                     className="absolute inset-0"
                                     aria-hidden="true"
                                 />
                                 Read more <span aria-hidden="true">&rarr;</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="text-center">
@@ -49,11 +50,8 @@ export default function Landing() {
                             geared just for you.
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
-                            <Link
-                                href="/login"
-                                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Get started
+                            <Link href="/login">
+                                <Button type="primary">Get started</Button>
                             </Link>
                             <Link
                                 href="/about"
