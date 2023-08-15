@@ -79,7 +79,7 @@ const ForgotPassword: NextPage = () => {
     return (
         <Auth.LoginGuard>
             <Head>
-                <title>Change Password</title>
+                <title>Forgot Password</title>
             </Head>
             <Row
                 wrap={true}
@@ -94,7 +94,7 @@ const ForgotPassword: NextPage = () => {
                             fontWeight: "bold",
                         }}
                     >
-                        Change Password
+                        Forgot Password
                     </Typography.Title>
                     <Typography.Text>
                         Enter your email to reset your password
@@ -155,7 +155,7 @@ const ForgotPassword: NextPage = () => {
                                 fontWeight: "bold",
                             }}
                         >
-                            Login to explore!
+                            Dont worry we got you covered.
                         </Typography.Title>
                     </Space>
                 </Col>

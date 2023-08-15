@@ -480,7 +480,8 @@ const Assignments: NextPage = () => {
                                 style={{
                                     width: "100%",
                                 }}
-                                format="YYYY-MM-DD"
+                                showTime={{ format: "HH:mm" }}
+                                format="DD MMM YYYY HH:mm"
                                 placeholder="Please select due date!"
                                 disabledDate={(current) => {
                                     return current && current < dayjs();

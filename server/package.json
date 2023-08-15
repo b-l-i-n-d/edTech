@@ -1,11 +1,11 @@
 {
-    "name": "create-nodejs-express-app",
-    "version": "1.7.0",
-    "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
+    "name": "edtech",
+    "version": "0.1.0",
+    "description": "Edtech API",
     "bin": "bin/createNodejsApp.js",
     "main": "src/index.js",
     "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
-    "author": "Hagop Jamkojian <hagopj13@gmail.com>",
+    "author": "b-l-i-n-d",
     "license": "MIT",
     "type": "module",
     "engines": {
@@ -48,7 +48,8 @@
         "passport",
         "joi",
         "eslint",
-        "prettier"
+        "prettier",
+        "edtech"
     ],
     "dependencies": {
         "bcryptjs": "^2.4.3",
