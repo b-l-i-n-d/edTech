@@ -409,7 +409,7 @@ git clone https://github.com/b-l-i-n-d/edTech.git
 
 ##### Edit assignment mark
 
-![Edit assignment mark](./screenshots/admin-edit-assingmrnt-mark.png)
+![Edit assignment mark](./screenshots/admin-edit-assingment-mark.png)
 
 ##### View assignment mark
 
