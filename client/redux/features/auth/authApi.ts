@@ -64,7 +64,7 @@ export const authApi = apiSlice.injectEndpoints({
             },
         }),
         refreshTokens: builder.mutation({
-            query: (refreshToken) => ({
+            query: (refreshToken: string) => ({
                 url: "auth/refresh-tokens",
                 method: "POST",
                 body: { refreshToken },

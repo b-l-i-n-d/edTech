@@ -261,7 +261,14 @@ export interface ILeaderboard {
     }[];
 }
 
-export type ModalType = "add" | "edit" | "view";
+export type ModalType =
+    | "add"
+    | "edit"
+    | "view"
+    | "submit-assignment"
+    | "submit-quizz"
+    | "view-assignment"
+    | "view-quizz";
 
 export interface DebounceSelectProps<ValueType = any>
     extends Omit<SelectProps<ValueType | ValueType[]>, "options" | "children"> {

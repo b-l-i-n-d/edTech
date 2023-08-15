@@ -161,7 +161,7 @@ const Dashboard: NextPage = () => {
                                     (
                                         (user?.watchedVideos.length /
                                             totalVideos) as any
-                                    ).toFixed(2) * 100 || 0
+                                    ).toFixed(4) * 100 || 0
                                 } %`}
                                 showZero
                             />
@@ -199,7 +199,7 @@ const Dashboard: NextPage = () => {
                                     (
                                         (quizzReport.totalQuizzTaken /
                                             totalQuizzSets) as any
-                                    ).toFixed(2) * 100 || 0
+                                    ).toFixed(4) * 100 || 0
                                 } %`}
                                 showZero
                             />
@@ -243,7 +243,7 @@ const Dashboard: NextPage = () => {
                                     (
                                         (assignmentReport.totalAssignmentTaken /
                                             totalAssignments) as any
-                                    ).toFixed(2) * 100 || 0
+                                    ).toFixed(4) * 100 || 0
                                 } %`}
                                 showZero
                             />

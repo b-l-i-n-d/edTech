@@ -33,7 +33,6 @@ const ForgotPassword: NextPage = () => {
     ] = useForgotPasswordMutation();
 
     const onFinish = (values: any) => {
-        console.log("Received values of form: ", values);
         forgotPassword(values.email);
     };
 

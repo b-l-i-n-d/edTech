@@ -103,7 +103,7 @@ const UserMenu: React.FC = () => {
         {
             key: "drawer",
             label: (
-                <span className="md:hidden">
+                <span className="lg:hidden">
                     <MenuOutlined />
                 </span>
             ),
@@ -113,7 +113,7 @@ const UserMenu: React.FC = () => {
 
     return (
         <>
-            <div className="hidden md:flex md:items-center md:justify-end md:flex-1">
+            <div className="hidden lg:flex lg:items-center lg:justify-end lg:flex-1">
                 <Menu
                     style={{
                         display: "flex",
@@ -126,7 +126,7 @@ const UserMenu: React.FC = () => {
                     items={items}
                 />
             </div>
-            <div className="flex items-center justify-end flex-1 md:hidden">
+            <div className="flex items-center justify-end flex-1 lg:hidden">
                 <Menu
                     style={{
                         display: "flex",

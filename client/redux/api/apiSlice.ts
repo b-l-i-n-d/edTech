@@ -26,7 +26,7 @@ export const apiSlice = createApi({
             getState().auth?.tokens?.refresh?.expires < Date.now();
         const result = await baseQuery(args, api, extraOptions);
 
-        if (result.error?.status === 401 || isTokenExpired) {
+        if ((result.error?.status === 401 || isTokenExpired) && refreshToken) {
             api.dispatch(authApi.endpoints.logout.initiate(refreshToken));
         }
         return result;

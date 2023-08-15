@@ -2,17 +2,21 @@ import {
     HomeOutlined,
     InfoCircleOutlined,
     LoginOutlined,
+    MenuOutlined,
 } from "@ant-design/icons";
-import { Menu, Typography } from "antd";
+import type { MenuProps } from "antd";
+import { Drawer, Menu, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 
 const NoAuthMenu: React.FC = () => {
     const router = useRouter();
     const pathname = router.pathname;
 
-    const items = [
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const items: MenuProps["items"] = [
         {
             key: "/",
             icon: <HomeOutlined />,
@@ -36,20 +40,62 @@ const NoAuthMenu: React.FC = () => {
                 </Link>
             ),
         },
+        {
+            key: "drawer",
+            label: (
+                <span className="md:hidden">
+                    <MenuOutlined />
+                </span>
+            ),
+            onClick: () => setDrawerOpen(true),
+        },
     ];
 
     return (
-        <Menu
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                flex: 1,
-            }}
-            mode="horizontal"
-            selectedKeys={[pathname]}
-            items={items}
-        />
+        <>
+            <div className="hidden md:flex md:items-center md:justify-end md:flex-1">
+                <Menu
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        flex: 1,
+                    }}
+                    mode="horizontal"
+                    selectedKeys={[pathname]}
+                    items={items}
+                />
+            </div>
+            <div className="flex items-center justify-end flex-1 md:hidden">
+                <Menu
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        flex: 1,
+                    }}
+                    mode="horizontal"
+                    selectedKeys={[pathname]}
+                    items={items.filter(
+                        (item) => item && item.key === "drawer"
+                    )}
+                />
+            </div>
+
+            <Drawer
+                open={drawerOpen}
+                placement="right"
+                onClose={() => setDrawerOpen(false)}
+            >
+                <Menu
+                    mode="inline"
+                    selectedKeys={[pathname]}
+                    items={items.filter(
+                        (item) => item && item.key !== "drawer"
+                    )}
+                />
+            </Drawer>
+        </>
     );
 };
 
