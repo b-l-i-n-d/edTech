@@ -37,6 +37,7 @@
         "@reduxjs/toolkit": "^1.9.5",
         "dayjs": "^1.11.8",
         "next-redux-wrapper": "^8.1.0",
+        "nprogress": "^0.2.0",
         "rc-virtual-list": "^3.5.2",
         "react-icons": "^4.9.0",
         "react-markdown": "^8.0.7",

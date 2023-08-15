@@ -2,6 +2,9 @@ import { StyleProvider } from "@ant-design/cssinjs";
 import { notification } from "antd";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
+import Head from "next/head";
+import { Router } from "next/router";
+import NProgress from "nprogress";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { AppLayout } from "../components";
@@ -19,6 +22,22 @@ function App({ Component, ...rest }: AppProps) {
         duration: 3,
     });
 
+    NProgress.configure({
+        showSpinner: false,
+        trickleSpeed: 100,
+        easing: "ease",
+        speed: 500,
+        minimum: 0.1,
+    });
+
+    Router.events.on("routeChangeStart", (url) => {
+        NProgress.start();
+    });
+
+    Router.events.on("routeChangeComplete", () => {
+        NProgress.done(false);
+    });
+
     return (
         <Provider store={store}>
             <PersistGate persistor={store.__persistor} loading={null}>
@@ -26,6 +45,15 @@ function App({ Component, ...rest }: AppProps) {
                     <main className={inter.variable}>
                         <StyleProvider hashPriority="high">
                             <AppLayout>
+                                <Head>
+                                    <link
+                                        rel="stylesheet"
+                                        href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+                                        integrity="sha512-42kB9yDlYiCEfx2xVwq0q7hT4uf26FUgSIZBK8uiaEnTdShXjwr8Ip1V4xGJMg3mHkUt9nNuTDxunHF0/EgxLQ=="
+                                        crossOrigin="anonymous"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                </Head>
                                 <Component {...props.pageProps} />
                             </AppLayout>
                         </StyleProvider>
