@@ -44,6 +44,7 @@ const About = ({ AboutMd }: InferGetStaticPropsType<typeof getStaticProps>) => {
                 <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
+                    className="markdown-image"
                 >
                     {AboutMd}
                 </ReactMarkdown>

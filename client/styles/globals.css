@@ -24,3 +24,10 @@
     background: grey;
     border-radius: 10px;
 }
+
+.markdown-image img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
